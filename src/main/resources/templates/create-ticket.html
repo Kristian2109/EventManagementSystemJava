@@ -1,0 +1,35 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<header th:include="fragments/header.html :: head"></header>
+<body>
+<main>
+<div th:replace="fragments/navbar.html :: nav"> </div>
+<div class="row form register">
+    <h3 class="center heading">Choose the details of your ticket</h3>
+    <form th:object="${createTicketDTO}" class="col s12" id="review-form" method="post" action="/events/createTicket">
+        <input hidden="hidden" th:field="*{eventId}">
+        <div class="row">
+            <div class="input-field col s6">
+                <label for="price">Price</label>
+                <input th:field="*{price}"  id="price" type="number" step="0.01" class="validate">
+            </div>
+            <div class="input-field col s6">
+                <label for="ticketsCount">Tickets Count</label>
+                <input th:field="*{ticketsCount}"  id="ticketsCount" type="number" step="1" class="validate">
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12">
+                <label for="description">Description</label>
+                <input th:field="*{description}" id="description" type="text" class="validate">
+            </div>
+        </div>
+        <div class="center">
+            <button class="btn waves-effect waves-light" type="submit" name="action">Create Ticket Template
+                <i class="material-icons right">send</i>
+            </button>
+        </div>
+    </form>
+</div>
+</main>
+<footer th:include="fragments/footer.html :: foot"></footer>
+</body>

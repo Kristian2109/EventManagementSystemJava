@@ -1,0 +1,49 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<header th:include="fragments/header.html :: head"></header>
+<body>
+<main>
+<div th:replace="fragments/navbar.html :: nav"> </div>
+<div class="row form register">
+<form th:object="${userProfileDTO}" class="col s12" method="post" action="/profile/update">
+        <input hidden="hidden" th:field="*{id}">
+    <div class="row">
+        <div class="input-field col s6">
+            <label for="first_name">First Name</label>
+            <input th:field="*{firstName}"  id="first_name" type="text" class="validate">
+        </div>
+        <div class="input-field col s6">
+            <label for="last_name">Last Name</label>
+            <input th:field="*{lastName}" id="last_name" type="text" class="validate">
+        </div>
+    </div>
+    <div class="row">
+        <div class="input-field col s12">
+            <label for="username">Username</label>
+            <input th:field="*{username}" id="username" type="text" class="validate">
+            <span class="helper-text" data-error="wrong" data-success="right">Username must be unique</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="input-field col s6">
+            <label for="phoneNumber">Phone Number</label>
+            <input th:field="*{phoneNumber}" id="phoneNumber" type="text" class="validate">
+        </div>
+        <div class="input-field col s6">
+            <label for="identityNumber">Identity Number</label>
+            <input th:field="*{identityNumber}" id="identityNumber" type="text" class="validate">
+            <span class="helper-text" data-error="wrong" data-success="right">
+                    If you want to be an Organizer, you need an Identity number
+            </span>
+        </div>
+    </div>
+    <div class="center">
+        <button class="btn waves-effect waves-light" type="submit" name="action">Save
+            <i class="material-icons right">send</i>
+        </button>
+    </div>
+</form>
+</div>
+</main>
+<footer th:include="fragments/footer.html :: foot"></footer>
+</body>

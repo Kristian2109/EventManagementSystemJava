@@ -1,0 +1,90 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/header.html :: head"></head>
+<body>
+<main>
+<div th:replace="fragments/navbar.html :: nav"> </div>
+<div class="row form register">
+    <h3 class="center heading">Create Event</h3>
+    <form th:object="${createEventDTO}" class="col s12" method="post" action="/events" enctype="multipart/form-data">
+        <input hidden="hidden" th:field="*{createdById}">
+        <input hidden="hidden" th:field="*{eventGroupId}">
+        <div class="row">
+            <div class="input-field col s6">
+                <label for="name">Name</label>
+                <input th:field="*{name}"  id="name" type="text" class="validate">
+            </div>
+            <div class="input-field col s12">
+                <label for="description">Description</label>
+                <input th:field="*{description}" id="description" type="text" class="validate">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s2">
+                <p>Begin time: </p>
+            </div>
+            <div class="input-field col s6">
+                <input th:field="*{beginTime}" id="beginTime" type="datetime-local">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s2">
+                <p>End time: </p>
+            </div>
+            <div class="input-field col s6">
+                <input th:field="*{endTime}" id="endTime" type="datetime-local">
+            </div>
+        </div>
+        <script>
+            var beginTime = document.getElementById("beginTime");
+            var endTime = document.getElementById("endTime");
+            document.addEventListener('DOMContentLoaded', () => {
+                beginTime.min = new Date().toISOString().slice(0,new Date().toISOString().lastIndexOf(":"));
+
+                beginTime.addEventListener("change", () => {
+                    endTime.min = beginTime.value;
+                })
+            });
+        </script>
+        <div class="row">
+            <div class="input-field col s6">
+                <select th:field="*{isFree}">
+                    <option value="1" disabled selected>Choose your option</option>
+                    <option value="1">Free</option>
+                    <option value="0">Paid</option>
+                </select>
+                <label>Is Free</label>
+            </div>
+            <div class="input-field col s6">
+                <select th:field="*{isOnline}">
+                    <option value="0" disabled selected>Choose your option</option>
+                    <option value="0">Online</option>
+                    <option value="1">Inplace</option>
+                </select>
+                <label>Is Online</label>
+            </div>
+        </div>
+        <div class="file-field input-field">
+            <div class="btn">
+                <span>File</span>
+                <input type="file" name="file" id="file">
+            </div>
+            <div class="file-path-wrapper">
+                <input class="file-path validate" type="text">
+            </div>
+        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var elems = document.querySelectorAll('select');
+                var instances = M.FormSelect.init(elems);
+            });
+        </script>
+        <div class="center">
+            <button class="btn waves-effect waves-light" type="submit" name="action">Create Event
+                <i class="material-icons right">send</i>
+            </button>
+        </div>
+    </form>
+</div>
+</main>
+</body>
+<footer th:include="fragments/footer.html :: foot"></footer>

@@ -1,0 +1,22 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<header th:include="fragments/header.html :: head"></header>
+<body>
+<main>
+<div th:replace="fragments/navbar.html :: nav"> </div>
+<div class="user-profile">
+    <h4 class="heading">Browse Groups to join!</h4>
+    <ul class="collection">
+        <li th:each="eventGroup, groupStat : ${groups}" class="collection-item avatar">
+            <img src="images/yuna.jpg" alt="" class="circle">
+            <span class="title" th:text="*{eventGroup.name}"></span>
+            <p th:text="*{eventGroup.description}"></p>
+            <a th:href="'/groups/' + ${eventGroup.getId()} + '/members/' + ${userId} + '/request'"
+               class="btn-floating btn-small waves-effect waves-light secondary-content">
+                <i class="material-icons">add</i>
+            </a>
+        </li>
+    </ul>
+</div>
+</main>
+<footer th:include="fragments/footer.html :: foot"></footer>
+</body>

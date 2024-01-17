@@ -1,0 +1,58 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<header th:include="fragments/header.html :: head"></header>
+<body>
+<main>
+<div th:replace="fragments/navbar.html :: nav"> </div>
+<div class="row form register">
+    <h3 class="center heading">Make a Review</h3>
+    <form th:object="${createReviewDTO}" class="col s12" method="post" th:action="'/events/' + ${eventId} + '/reviews'">
+        <input hidden="hidden" th:field="*{eventId}">
+        <div class="row">
+            <div class="input-field col s6" id="title">
+                <label for="name">Title</label>
+                <input th:field="*{title}"  id="name" type="text" class="validate">
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12">
+                <i class="material-icons prefix">mode_edit</i>
+                <textarea th:field="*{content}" id="description" class="validate materialize-textarea">
+                </textarea>
+                <label for="description">Content</label>
+            </div>
+        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var elems = document.querySelectorAll('textarea');
+                var instances = M.CharacterCounter.init(elems);
+            });
+        </script>
+        <div class="row">
+            <div class="input-field col s3 rate-box">
+                <select th:field="*{rating}">
+                    <option value="0" disabled selected>Choose a rating</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+                <label>How was your Experience</label>
+            </div>
+        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var elems = document.querySelectorAll('select');
+                var instances = M.FormSelect.init(elems);
+            });
+        </script>
+        <div class="center">
+            <button class="btn waves-effect waves-light" type="submit" name="action">Send review
+                <i class="material-icons right">send</i>
+            </button>
+        </div>
+    </form>
+</div>
+</main>
+<footer th:include="fragments/footer.html :: foot"></footer>
+</body>

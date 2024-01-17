@@ -1,0 +1,28 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<header th:include="fragments/header.html :: head"></header>
+<main>
+<div th:replace="fragments/navbar.html :: nav"> </div>
+<div class="row form">
+    <h3 class="center heading">Login</h3>
+    <form class="col s12" th:object="${loginUserDTO}" action="/auth/login" method="post">
+        <div class="row">
+            <div class="input-field col s12">
+                <label for="email">Email</label>
+                <input th:field="*{email}"  id="email" type="email" class="validate">
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12">
+                <label for="password">Password</label>
+                <input th:field="*{password}" id="password" type="password" class="validate">
+            </div>
+        </div>
+        <div class="center">
+            <button class="btn waves-effect waves-light" type="submit" name="action">Login
+                <i class="material-icons right">vpn_key</i>
+            </button>
+        </div>
+    </form>
+</div>
+</main>
+<footer th:include="fragments/footer.html :: foot"></footer>

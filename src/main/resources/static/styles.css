@@ -1,0 +1,139 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Work+Sans:wght@600&display=swap');
+
+body {
+    margin: 0;
+    font-family: "Montserat", sans-serif;
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+
+.form {
+    margin: 4rem 20%;
+}
+
+.nav-wrapper {
+    padding: 0 10px;
+}
+
+.nav li {
+    margin: auto 1rem;
+}
+
+.nav li:hover {
+    background: deepskyblue;
+}
+
+/* -------------------- Register -------------------- */
+
+.register .input-field {
+    margin: 0 auto;
+}
+
+.heading {
+    margin: 10px auto;
+}
+
+.user-profile {
+    margin: auto 25%;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+#title {
+    margin: 0.75rem 25%;
+}
+
+.star-icon {
+    color: gold;
+}
+
+/* -------------------- Card -------------------- */
+
+.card-container {
+    margin: auto 15%;
+}
+
+/* -------------------- Errors -------------------- */
+
+.error-container {
+    border-radius: 10px;
+    margin: auto 35%;
+    box-shadow: -1px 2px 17px 1px rgba(0,0,0,0.79);
+    -webkit-box-shadow: -1px 2px 17px 1px rgba(0,0,0,0.79);
+    -moz-box-shadow: -1px 2px 17px 1px rgba(0,0,0,0.79);
+    position: relative;
+    bottom: 4rem;
+    z-index: 2;
+}
+
+.error-container:hover {
+    background-color: deeppink !important;
+}
+
+/* -------------------- Event -------------------- */
+
+.event-container {
+    margin: 1rem 20%;
+    background-color: azure;
+    padding: 1rem;
+    border-radius: 10px;
+}
+
+.event-header-image {
+    max-width: 13rem;
+    max-height: 7rem;
+}
+
+.event-image-container {
+    overflow: hidden;
+    height: 15rem;
+    position: relative;
+    margin: auto 17%;
+    border-radius: 10px;
+}
+
+.event-image-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* -------------------- Review -------------------- */
+
+.review-container {
+    margin: auto 10%;
+}
+
+.reviews {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.review {
+    background-color: #F2F1EB;
+    border-radius: 10px;
+    padding: 1rem;
+}
+
+.review p {
+    margin: 0.5rem;
+}
+
+.review h6 {
+    display: inline;
+}
+
+/* -------------------- Group -------------------- */

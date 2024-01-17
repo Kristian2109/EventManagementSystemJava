@@ -1,0 +1,97 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<header th:include="fragments/header.html :: head"></header>
+<body>
+<main>
+    <div th:replace="fragments/navbar.html :: nav"></div>
+    <div th:object="${event}" class="event-container">
+        <div class="event-image-container row" th:if="image">
+            <img th:src="'data:image/jpg;base64,' + ${image}" ALT="eventPhoto"/>
+        </div>
+        <h5 class="heading col s12" th:text="*{name}"></h5>
+        <div>
+            <p style="white-space: pre-line; word-wrap: break-word;" th:text="*{description}">Event Description</p>
+        </div>
+        <div class="row">
+            <p class="col s12"><i class="material-icons">date_range</i>Begins at:
+                <span class="bold" th:text="${#temporals.format(event.getBeginTime(), 'EEEE, d MMMM, HH MM')}"></span>
+            </p>
+        </div>
+        <div class="row">
+            <p class="col s12"><i class="material-icons">date_range</i>Ends at:
+                <span class="bold" th:text="${#temporals.format(event.getEndTime(), 'EEEE, d MMMM, HH MM')}"></span>
+            </p>
+        </div>
+        <hr>
+        <div>
+            <h5 th:if="${event.ticketTemplates.isEmpty()}" class="center">No Available Tickets</h5>
+            <div th:if="${isAdmin}">
+                <div class="row center">
+                    <a th:href="'/events/' + ${event.getId()} + '/createTicket'"
+                       class="btn waves-effect waves-light center">Add ticket</a>
+                </div>
+            </div>
+            <h5 class="center">Tickets</h5>
+            <table th:if="${!event.ticketTemplates.isEmpty()}">
+                <thead>
+                    <tr>
+                        <th>Ticket Description</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tr th:each="ticket, ticketStat : ${event.ticketTemplates}" class="row">
+                    <td th:text="${ticket.description}"></td>
+                    <td th:text="${ticket.price}"></td>
+                    <td>
+                        <a th:href="'/card/tickets/' + ${ticket.getId()} + '?eventId=' + ${eventId}" class="btn-floating btn-small waves-effect waves-light">
+                            <i class="material-icons">add</i>
+                        </a>
+                    </td>
+                </tr>
+            </table>
+            <hr>
+        </div>
+        <div class="review-container">
+            <h5 th:text="${reviewList.isEmpty() ? 'No Reviews' : 'Reviews'}" class="center">No Reviews</h5>
+            <ul class="reviews">
+                <li th:each="review : ${reviewList}" class="collection-item row">
+                    <div class="review">
+                        <div>
+                            <h6 class="bold" th:text="${review.getTitle()}"></h6>
+                            <i th:each="i : ${#numbers.sequence( 1, review.getRating())}" class="material-icons star-icon">star</i>
+                        </div>
+                        <p th:text="${review.getContent()}"></p>
+                        <span th:text="'Author: ' + ${review.getUser().username}">
+
+                        </span>
+
+                    </div>
+                </li>
+            </ul>
+            <ul class="pagination">
+                <li th:if="${event.reviews.size() % pageSize != 0}"
+                        th:each="i : ${#numbers.sequence( 0, event.reviews.size() / pageSize)}"
+                    th:class="'waves-effect'"
+                    th:classappend="${(i + 1) == pageNumber} ? 'active'">
+                    <a th:href="${'/events/' + eventId + '?pageNumberReviews=' + (i + 1) +
+                                    '&pageSizeReviews=' + pageSize}"
+                        th:text="${i + 1}"></a>
+                </li>
+                <li th:if="${event.reviews.size() % pageSize == 0}"
+                    th:each="i : ${#numbers.sequence( 0, event.reviews.size() / pageSize - 1)}"
+                    th:class="'waves-effect'"
+                    th:classappend="${(i + 1) == pageNumber} ? 'active'">
+                    <a th:href="${'/events/' + eventId + '?pageNumberReviews=' + (i + 1) +
+                                    '&pageSizeReviews=' + pageSize}"
+                       th:text="${i + 1}"></a>
+                </li>
+            </ul>
+            <div class="row center">
+                <a th:href="'/events/' + ${event.getId()} + '/createReview'"
+                   class="btn waves-effect waves-light center">Make
+                    review</a>
+            </div>
+        </div>
+    </div>
+</main>
+<footer th:include="fragments/footer.html :: foot"></footer>
+</body>

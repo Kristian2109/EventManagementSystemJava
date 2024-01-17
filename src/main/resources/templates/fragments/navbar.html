@@ -1,0 +1,55 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<nav th:fragment="nav">
+    <div class="nav-wrapper blue lighten-1">
+        <a href="#" class="brand-logo"> <i class="material-icons">accessibility</i>Eventsbook</a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li th:if="${authenticated}">
+                <a th:if="${authenticated}" class='dropdown-trigger' data-target='dropdown1'>Profile</a>
+                <ul id='dropdown1' class='dropdown-content'>
+                    <li><a href="/profile">Profile Info</a></li>
+                    <li class="divider" tabindex="-1"></li>
+                    <li><a href="/card">Card</a></li>
+                    <li class="divider" tabindex="-1"></li>
+                    <li><a href="/history">Events History</a></li>
+                </ul>
+            </li>
+            <li th:if="${authenticated}">
+                <a th:if="${authenticated}" class='dropdown-trigger' data-target='dropdown2'>Groups</a>
+                <ul id='dropdown2' class='dropdown-content'>
+                    <li><a href="/profile/groups">Your Groups</a></li>
+                    <li class="divider" tabindex="-1"></li>
+                    <li><a href="/groups/join">Join Groups</a></li>
+                    <li class="divider" tabindex="-1"></li>
+                    <li><a href="/groups/create">Create a Group</a></li>
+                </ul>
+            </li>
+            <li th:if="${authenticated}"><a href="/auth/logout">Logout</a></li>
+            <li th:if="${!authenticated}"><a href="/auth/login">Login</a></li>
+            <li th:if="${!authenticated}"><a href="/auth/register">Register</a></li>
+        </ul>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var elems = document.querySelectorAll('.dropdown-trigger');
+                var options = {
+                    alignment: "center"
+                }
+                var instances = M.Dropdown.init(elems, options);
+
+                var errorContainer = document.getElementById("error-container")
+                errorContainer.addEventListener("click", () => {
+                    errorContainer.style.display = "none"
+                })
+
+            });
+
+        </script>
+    </div>
+    <div th:if="${error}" class="red lighten-2 center error-container" id="error-container">
+        <p th:text="${error}">
+            Error
+        </p>
+    </div>
+    <script>
+
+    </script>
+</nav>

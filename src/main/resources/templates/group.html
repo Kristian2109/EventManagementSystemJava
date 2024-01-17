@@ -1,0 +1,68 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<header th:include="fragments/header.html :: head"></header>
+<body>
+<main>
+    <div th:replace="fragments/navbar.html :: nav"></div>
+    <div th:object="${group}" class="event-container">
+        <div class="event-image-container row" th:if="${image}">
+            <img th:src="'data:image/jpg;base64,' + ${image}" ALT="groupPhoto"/>
+        </div>
+        <h4 class="heading" th:text="*{name}"></h4>
+        <div class="row">
+            <p class="col s12" th:text="*{description}"></p>
+        </div>
+        <div th:if="${groupMember != null && !groupMember.getGroupRole().equals('VIEWER')}">
+            <a class="btn waves-effect waves-light" type="submit" th:href="'/events/create?groupId=' + ${group.getId()}">
+                Create Event
+                <i class="material-icons right">send</i>
+            </a>
+        </div>
+        <h4>Group events</h4>
+        <ul class="collection">
+            <li th:each="event, eventStat : ${group.getEvents()}"
+                class="collection-item avatar">
+                <p class="bold" th:text="${event.getName()}"></p>
+                <img th:if="${event.getImageFile() != null}" th:src="'data:image/jpg;base64,' + ${event.getImageFile().getEncoded()}" alt="" class="circle">
+                <img th:if="${event.getImageFile() == null}" src="/no-photo.jpg" alt="" class="circle"/>
+                <span th:if="${event.description.length() > 50}"
+                      th:text="${#strings.substring(event.getDescription(), 0, 50) + '...'}"></span>
+                <span th:if="${event.description.length() <= 50}"
+                      th:text="${event.getDescription()}"></span>
+                <div>
+                    <i class="material-icons">date_range</i>
+                    <span th:text="${#temporals.format(event.beginTime, 'yyyy-MM-dd')}" class="bold"></span>
+                </div>
+                <a th:href="'/events/' + ${event.getId()}" class="secondary-content"><i class="material-icons">send</i></a>
+            </li>
+        </ul>
+        <h4>Group Members</h4>
+        <ul class="collection">
+            <li th:each="member, memberStat : ${group.getMembers()}"
+                th:if="${ member.getStatus() != null && member.getStatus().toString().equals('ACCEPTED')}"
+                class="collection-item avatar">
+                <img src="images/yuna.jpg" alt="" class="circle">
+                <span class="title" th:text="${member.getUser().getFirstName()}"></span>
+                <p th:text="${member.getGroupRole().toString()}"></p>
+            </li>
+        </ul>
+        <div th:if="${groupMember != null && !groupMember.getGroupRole().equals('VIEWER')}">
+            <h4>Requests</h4>
+            <ul class="collection">
+                <li th:each="member, memberStat : ${group.getMembers()}"
+                    th:if="${ member.getStatus() != null && !member.isInvited && !member.getStatus().toString().equals('ACCEPTED')}"
+                    class="collection-item avatar">
+                    <!--                <img src="images/yuna.jpg" alt="" class="circle">-->
+                    <p th:text="${member.getUser().getFirstName()}" class="bold"></p>
+                    <p th:text="${member.getUser().getEmail()}"></p>
+                    <p th:text="${member.getGroupRole().toString()}"></p>
+                    <a th:href="'/groups/' + ${group.getId()} + '/members/' + ${member.getId()} + '/accept-request'"
+                       class="btn waves-effect waves-light secondary-content">
+                        Accept
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</main>
+<footer th:include="fragments/footer.html :: foot"></footer>
+</body>
