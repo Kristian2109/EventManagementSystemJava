@@ -12,6 +12,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Setter
+@Table(uniqueConstraints = {
+        @UniqueConstraint(name = "unique_user_event_group", columnNames = {"user", "event_group"})
+})
 public class GroupMember extends IdentityClassBase{
     @NotNull
     @ManyToOne(optional = false)

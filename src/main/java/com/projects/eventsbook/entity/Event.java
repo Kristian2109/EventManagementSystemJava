@@ -19,6 +19,9 @@ import java.util.List;
         @NamedAttributeNode("imageFile"),
         @NamedAttributeNode("eventGroup")
 })
+@Table(indexes = {
+        @Index(columnList = "name")
+})
 public class Event extends IdentityClassBase {
     @NotNull
     private String name;

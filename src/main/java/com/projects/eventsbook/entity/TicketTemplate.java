@@ -11,9 +11,6 @@ import lombok.*;
 @ToString
 @NoArgsConstructor
 public class TicketTemplate extends IdentityClassBase{
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
     @NotNull
     @ManyToOne(optional = false)
     private Event event;

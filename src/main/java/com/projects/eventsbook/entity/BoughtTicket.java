@@ -10,6 +10,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Setter
+@Table(uniqueConstraints = {
+        @UniqueConstraint(name = "unique_user_ticket_template_order", columnNames = {"user", "ticket_template"})
+})
 public class BoughtTicket extends IdentityClassBase {
     @ManyToOne(optional = false)
     @NotNull

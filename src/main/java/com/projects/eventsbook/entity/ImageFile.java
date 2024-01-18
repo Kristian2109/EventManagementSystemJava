@@ -10,15 +10,16 @@ import java.util.Base64;
 @Getter
 @Setter
 @NoArgsConstructor
+@Table(indexes = {
+        @Index(columnList = "name")
+})
 public class ImageFile extends IdentityClassBase{
-
     private String name;
     private String type;
     @Lob
     @Column(columnDefinition = "LONGBLOB")
     @NotNull
     private byte[] data;
-
 
     @Override
     public String toString() {

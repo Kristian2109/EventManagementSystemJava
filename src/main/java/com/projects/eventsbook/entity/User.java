@@ -3,6 +3,7 @@ package com.projects.eventsbook.entity;
 import com.projects.eventsbook.enumerations.ProfileStatus;
 import com.projects.eventsbook.enumerations.Role;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
@@ -21,6 +22,10 @@ import java.util.List;
         @NamedAttributeNode("memberships"),
         @NamedAttributeNode("ticketCards")
 })
+@Table(indexes = {
+        @Index(name = "email_idx", columnList = "email", unique = true),
+        @Index(name = "username_idx", columnList = "username", unique = true)
+})
 public class User extends IdentityClassBase {
     @NotNull
     private String firstName;
@@ -31,6 +36,7 @@ public class User extends IdentityClassBase {
     @NotNull
     private String username;
     @NotNull
+    @NotBlank
     private String password;
     private LocalDate bornAt;
     private String phoneNumber;
@@ -40,15 +46,16 @@ public class User extends IdentityClassBase {
     @Enumerated(EnumType.STRING)
     @NotNull
     private ProfileStatus profileStatus = ProfileStatus.ACTIVE;
+    @Column(unique = true)
+    private String identityNumber;
+    @Lob
+    private byte[] photo;
     @OneToMany(mappedBy = "boughtBy")
     private List<BoughtTicket> boughtTickets = new ArrayList<>();
     @OneToMany(mappedBy = "user")
     private List<GroupMember> memberships = new ArrayList<>();
     @OneToMany(mappedBy = "user")
     private List<TicketCard> ticketCards = new ArrayList<>();
-    private String identityNumber;
-    @Lob
-    private byte[] photo;
 
     public User(String firstName, String lastName, String email, String password, String username, LocalDate bornAt, String phoneNumber, String identityNumber) {
         this.firstName = firstName;

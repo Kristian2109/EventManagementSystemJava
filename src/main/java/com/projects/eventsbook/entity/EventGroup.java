@@ -18,11 +18,15 @@ import java.util.List;
         @NamedAttributeNode("events"),
         @NamedAttributeNode("imageFile")
 })
+@Table(indexes = {
+        @Index(columnList = "name", unique = true)
+})
 public class EventGroup extends IdentityClassBase{
     @NotNull
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private User owner;
     @NotNull
+    @Column(unique = true)
     private String name;
     @NotNull
     @Lob

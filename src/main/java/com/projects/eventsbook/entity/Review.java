@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 @Getter
 @Setter
 @ToString
+@Table(uniqueConstraints = {
+        @UniqueConstraint(name = "unique_user_event", columnNames = {"user", "event"})
+})
 public class Review extends IdentityClassBase {
     @NotNull
     @ManyToOne(optional = false)

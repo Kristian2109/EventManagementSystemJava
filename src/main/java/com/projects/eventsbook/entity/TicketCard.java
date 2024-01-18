@@ -9,6 +9,9 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
+@Table(uniqueConstraints = {
+        @UniqueConstraint(name = "unique_user_ticket_template", columnNames = {"user", "ticket_template"})
+})
 public class TicketCard extends IdentityClassBase {
     @NotNull
     @ManyToOne(optional = false)
