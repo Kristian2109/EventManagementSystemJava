@@ -3,22 +3,17 @@ package com.projects.eventsbook.entity;
 import com.projects.eventsbook.enumerations.GroupRole;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Data
 @NoArgsConstructor
-@AllArgsConstructor
-public class Event {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+@Getter
+@Setter
+public class Event extends IdentityClassBase {
     @NotNull
     private String name;
     @NotNull
@@ -30,8 +25,6 @@ public class Event {
     private LocalDateTime endTime;
     @NotNull
     private Boolean isFree;
-    @NotNull
-    private LocalDateTime createdAt = LocalDateTime.now();
     @NotNull
     @ManyToOne
     private EventGroup eventGroup;
@@ -73,7 +66,7 @@ public class Event {
     @Override
     public String toString() {
         return "Event{" +
-                "id=" + id +
+                "id=" + getId() +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 '}';

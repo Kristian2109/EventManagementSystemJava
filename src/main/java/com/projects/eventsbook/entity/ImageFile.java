@@ -1,31 +1,29 @@
 package com.projects.eventsbook.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
 
 import java.util.Base64;
 
-@Data
 @Entity
+@Getter
+@Setter
 @NoArgsConstructor
-@AllArgsConstructor
-public class ImageFile {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public class ImageFile extends IdentityClassBase{
 
     private String name;
     private String type;
     @Lob
+    @Column(columnDefinition = "LONGBLOB")
+    @NotNull
     private byte[] data;
 
 
     @Override
     public String toString() {
         return "ImageFile{" +
-                "id=" + id +
+                "id=" + getId() +
                 ", name='" + name + '\'' +
                 ", type='" + type + '\'' +
                 '}';

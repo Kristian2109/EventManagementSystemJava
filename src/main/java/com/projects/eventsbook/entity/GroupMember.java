@@ -4,20 +4,15 @@ import com.projects.eventsbook.enumerations.GroupMemberStatus;
 import com.projects.eventsbook.enumerations.GroupRole;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Data
 @NoArgsConstructor
-@AllArgsConstructor
-public class GroupMember {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+@Getter
+@Setter
+public class GroupMember extends IdentityClassBase{
     @NotNull
     @ManyToOne(optional = false)
     private User user;
@@ -29,8 +24,6 @@ public class GroupMember {
     private GroupRole groupRole;
     @NotNull
     private Boolean isInvited;
-    @NotNull
-    private LocalDateTime createdAt = LocalDateTime.now();
     @NotNull
     private LocalDateTime decidedAt;
     @Enumerated(EnumType.STRING)
@@ -56,7 +49,7 @@ public class GroupMember {
     @Override
     public String toString() {
         return "GroupMember{" +
-                "id=" + id +
+                "id=" + getId() +
                 ", user=" + user +
                 ", eventGroup=" + eventGroup +
                 ", groupRole=" + groupRole +

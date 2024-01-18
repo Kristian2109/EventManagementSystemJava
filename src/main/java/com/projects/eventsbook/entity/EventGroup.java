@@ -3,25 +3,17 @@ package com.projects.eventsbook.entity;
 import com.projects.eventsbook.enumerations.GroupMemberStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Data
+@Setter
+@Getter
 @NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class EventGroup {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @EqualsAndHashCode.Include
-    private Long id;
+public class EventGroup extends IdentityClassBase{
     @NotNull
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private User owner;
@@ -32,7 +24,6 @@ public class EventGroup {
     private String description;
     @NotNull
     private Boolean isPrivate;
-    private LocalDateTime createdAt = LocalDateTime.now();
     @ManyToOne
     private ImageFile imageFile;
     @OneToMany(mappedBy = "eventGroup", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -64,8 +55,7 @@ public class EventGroup {
     @Override
     public String toString() {
         return "EventGroup{" +
-                "id=" + id +
-                ", owner=" + owner +
+                "id=" + getId() +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 '}';
