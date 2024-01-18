@@ -4,6 +4,8 @@ import com.projects.eventsbook.DTO.userDomain.UserProfileDTO;
 import com.projects.eventsbook.DTO.userDomain.UserProjection;
 import com.projects.eventsbook.entity.TicketCard;
 import com.projects.eventsbook.entity.User;
+import jakarta.validation.constraints.NotNull;
+import lombok.NonNull;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,4 +19,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     public Optional<User> findByEmail(String email);
     public Optional<User> findByUsername(String username);
     public Optional<UserProjection> findAllByFirstNameEquals(String firstName);
+    @Override
+    @EntityGraph(value = "User.relations")
+    @NonNull Optional<User> findById(@NonNull Long id);
 }

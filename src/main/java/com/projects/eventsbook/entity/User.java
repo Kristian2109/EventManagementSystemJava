@@ -4,10 +4,7 @@ import com.projects.eventsbook.enumerations.ProfileStatus;
 import com.projects.eventsbook.enumerations.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -15,14 +12,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+@NamedEntityGraph(name = "User.relations", attributeNodes = {
+        @NamedAttributeNode("boughtTickets"),
+        @NamedAttributeNode("memberships"),
+        @NamedAttributeNode("ticketCards")
+})
+public class User extends IdentityClassBase {
     @NotNull
     private String firstName;
     @NotNull
@@ -35,18 +34,17 @@ public class User {
     private String password;
     private LocalDate bornAt;
     private String phoneNumber;
-    private LocalDateTime createdAt = LocalDateTime.now();
     @Enumerated(EnumType.STRING)
     @NotNull
     private Role role = Role.USER;
     @Enumerated(EnumType.STRING)
     @NotNull
     private ProfileStatus profileStatus = ProfileStatus.ACTIVE;
-    @OneToMany(mappedBy = "boughtBy", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "boughtBy")
     private List<BoughtTicket> boughtTickets = new ArrayList<>();
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user")
     private List<GroupMember> memberships = new ArrayList<>();
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user")
     private List<TicketCard> ticketCards = new ArrayList<>();
     private String identityNumber;
     @Lob
@@ -79,10 +77,9 @@ public class User {
                 });
     }
 
-    @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
+                "id=" + getId() +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
