@@ -13,6 +13,11 @@ import java.util.List;
 @Setter
 @Getter
 @NoArgsConstructor
+@NamedEntityGraph(name = "EventGroup.relations", attributeNodes = {
+        @NamedAttributeNode("members"),
+        @NamedAttributeNode("events"),
+        @NamedAttributeNode("imageFile")
+})
 public class EventGroup extends IdentityClassBase{
     @NotNull
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
@@ -26,9 +31,9 @@ public class EventGroup extends IdentityClassBase{
     private Boolean isPrivate;
     @ManyToOne
     private ImageFile imageFile;
-    @OneToMany(mappedBy = "eventGroup", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "eventGroup", cascade = CascadeType.ALL)
     private List<GroupMember> members = new ArrayList<>();
-    @OneToMany(mappedBy = "eventGroup", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "eventGroup")
     private List<Event> events = new ArrayList<>();
 
 

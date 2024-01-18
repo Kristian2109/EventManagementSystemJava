@@ -22,15 +22,15 @@
             <li th:each="event, eventStat : ${group.getEvents()}"
                 class="collection-item avatar">
                 <p class="bold" th:text="${event.getName()}"></p>
-                <img th:if="${event.getImageFile() != null}" th:src="'data:image/jpg;base64,' + ${event.getImageFile().getEncoded()}" alt="" class="circle">
-                <img th:if="${event.getImageFile() == null}" src="/no-photo.jpg" alt="" class="circle"/>
-                <span th:if="${event.description.length() > 50}"
+<!--                <img th:if="${event.getImageFile() != null}" th:src="'data:image/jpg;base64,' + ${event.getImageFile().getEncoded()}" alt="" class="circle">-->
+<!--                <img th:if="${event.getImageFile() == null}" src="/no-photo.jpg" alt="" class="circle"/>-->
+                <span th:if="${event.getDescription().length() > 50}"
                       th:text="${#strings.substring(event.getDescription(), 0, 50) + '...'}"></span>
-                <span th:if="${event.description.length() <= 50}"
+                <span th:if="${event.getDescription().length() <= 50}"
                       th:text="${event.getDescription()}"></span>
                 <div>
                     <i class="material-icons">date_range</i>
-                    <span th:text="${#temporals.format(event.beginTime, 'yyyy-MM-dd')}" class="bold"></span>
+                    <span th:text="${#temporals.format(event.getBeginTime(), 'yyyy-MM-dd')}" class="bold"></span>
                 </div>
                 <a th:href="'/events/' + ${event.getId()}" class="secondary-content"><i class="material-icons">send</i></a>
             </li>

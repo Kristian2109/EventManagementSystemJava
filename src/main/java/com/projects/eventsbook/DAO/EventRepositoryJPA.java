@@ -1,11 +1,14 @@
 package com.projects.eventsbook.DAO;
 
 import com.projects.eventsbook.entity.Event;
+import lombok.NonNull;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface EventRepositoryJPA extends JpaRepository<Event, Long> {
@@ -34,5 +37,10 @@ public interface EventRepositoryJPA extends JpaRepository<Event, Long> {
     public List<Event> findByEventGroup_IsPrivateIs(boolean isPrivate);
     @Query(value = "select count(r)" +
             " from Review r where r.user.id =: userId  and r.event.id =: eventId")
-    public int userReviewsCount(Long userId, Long eventId);
+    int userReviewsCount(Long userId, Long eventId);
+
+    @Override
+    @EntityGraph("Event.relations")
+    @NonNull
+    Optional<Event> findById(@NonNull Long id);
 }

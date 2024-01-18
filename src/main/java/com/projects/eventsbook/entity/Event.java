@@ -13,6 +13,12 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
+@NamedEntityGraph(name = "Event.relations", attributeNodes = {
+        @NamedAttributeNode("reviews"),
+        @NamedAttributeNode("ticketTemplates"),
+        @NamedAttributeNode("imageFile"),
+        @NamedAttributeNode("eventGroup")
+})
 public class Event extends IdentityClassBase {
     @NotNull
     private String name;
@@ -26,20 +32,16 @@ public class Event extends IdentityClassBase {
     @NotNull
     private Boolean isFree;
     @NotNull
-    @ManyToOne
+    @ManyToOne(optional = false)
     private EventGroup eventGroup;
     @NotNull
-    @ManyToOne
+    @ManyToOne(optional = false)
     private User createdBy;
     @NotNull
     private Boolean isOnline;
-    @OneToMany(
-            mappedBy = "event",
-            cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER,
-            targetEntity = Review.class)
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private List<Review> reviews = new ArrayList<>();
-    @OneToMany (cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = TicketTemplate.class)
+    @OneToMany (mappedBy = "event", cascade = CascadeType.ALL)
     private List<TicketTemplate> ticketTemplates = new ArrayList<>();
     @ManyToOne
     private ImageFile imageFile;
@@ -75,7 +77,7 @@ public class Event extends IdentityClassBase {
     public List<Review> getByPage(int pageNumber, int pageSize) {
         int begin = (pageNumber - 1) * pageSize;
 
-        if (begin >= reviews.size()) {
+        if (begin >= reviews.size() || reviews.isEmpty()) {
             return new ArrayList<>();
         }
         if (begin + pageSize >= reviews.size()) {

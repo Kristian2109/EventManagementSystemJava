@@ -14,10 +14,10 @@ import org.springframework.stereotype.Service;
 @ToString
 public class Review extends IdentityClassBase {
     @NotNull
-    @ManyToOne
+    @ManyToOne(optional = false)
     private User user;
     @NotNull
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Event event;
     @NotNull
     @Size(min = 6, max = 50)

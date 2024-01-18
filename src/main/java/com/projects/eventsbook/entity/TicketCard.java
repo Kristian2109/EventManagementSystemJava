@@ -11,10 +11,10 @@ import lombok.*;
 @ToString
 public class TicketCard extends IdentityClassBase {
     @NotNull
-    @ManyToOne
+    @ManyToOne(optional = false)
     private User user;
     @NotNull
-    @ManyToOne
+    @ManyToOne(optional = false)
     private TicketTemplate ticketTemplate;
     @NotNull
     private Integer ticketsCount;

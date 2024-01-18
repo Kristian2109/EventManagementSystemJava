@@ -10,20 +10,15 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Setter
-public class BoughtTicket extends IdentityClassBase{
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    @ManyToOne
+public class BoughtTicket extends IdentityClassBase {
+    @ManyToOne(optional = false)
     @NotNull
     private TicketTemplate ticketTemplate;
-    @ManyToOne
+    @ManyToOne(optional = false)
     @NotNull
     private User boughtBy;
     @NotNull
     private Integer ticketsCount;
-    @NonNull
-    private LocalDateTime boughtAt = LocalDateTime.now();
 
     public BoughtTicket(TicketTemplate ticketTemplate, User boughtBy, Integer ticketsCount) {
         this.ticketTemplate = ticketTemplate;

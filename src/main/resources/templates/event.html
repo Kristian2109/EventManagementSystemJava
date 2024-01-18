@@ -51,7 +51,7 @@
             <hr>
         </div>
         <div class="review-container">
-            <h5 th:text="${reviewList.isEmpty() ? 'No Reviews' : 'Reviews'}" class="center">No Reviews</h5>
+            <h5 th:text="${reviewList == null || reviewList.isEmpty() ? 'No Reviews' : 'Reviews'}" class="center">No Reviews</h5>
             <ul class="reviews">
                 <li th:each="review : ${reviewList}" class="collection-item row">
                     <div class="review">
