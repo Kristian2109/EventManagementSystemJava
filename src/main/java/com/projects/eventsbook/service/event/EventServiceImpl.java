@@ -39,7 +39,7 @@ public class EventServiceImpl implements EventService {
     public Event create(CreateEventDTO createEventDTO) {
         User currentUser = userService.getById(createEventDTO.getCreatedById());
         EventGroup currentEventGroup = eventGroupService.get(createEventDTO.getEventGroupId());
-        checkUserCreateEventInGroup(currentUser, currentEventGroup);
+        validateUserCreateEventInGroup(currentUser, currentEventGroup);
 
         Event eventToCreate = new Event();
         eventToCreate.setCreatedBy(currentUser);
@@ -100,11 +100,11 @@ public class EventServiceImpl implements EventService {
         return eventRepositoryJPA.userReviewsCount(userId, eventId) == 0;
     }
 
-    private void checkUserCreateEventInGroup(User user, EventGroup eventGroup) {
+    private void validateUserCreateEventInGroup(User user, EventGroup eventGroup) {
         Optional<GroupMember> member = eventGroup
                 .getMembers()
                 .stream()
-                .filter(groupMember -> groupMember.getUser().getId().equals(user.getId()) &&
+                .filter(groupMember -> groupMember.getUser().equals(user) &&
                                         groupMember.getStatus().equals(GroupMemberStatus.ACCEPTED))
                 .findFirst();
 
