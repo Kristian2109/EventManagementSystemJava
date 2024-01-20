@@ -245,5 +245,4 @@ public class EventGroupServiceImpl implements EventGroupService{
         return groupMember.get();
     }
 
-
 }

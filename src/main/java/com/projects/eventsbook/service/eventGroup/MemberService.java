@@ -1,20 +1,20 @@
 package com.projects.eventsbook.service.eventGroup;
 
 import com.projects.eventsbook.DTO.groupDomain.CreateMemberDTO;
+import com.projects.eventsbook.entity.EventGroup;
 import com.projects.eventsbook.entity.GroupMember;
 import com.projects.eventsbook.enumerations.GroupRole;
 
 public interface MemberService {
 
-    public GroupMember getMemberByGroupIdAndUserId(Long userId, Long groupId);
-    public GroupMember invite(CreateMemberDTO createMemberDTO);
-    public GroupMember acceptInvitation(Long groupMemberId);
-    public GroupMember rejectInvitation(Long groupMemberId);
-    public GroupMember request(CreateMemberDTO createMemberDTO);
-    public GroupMember rejectRequest(Long groupMemberId);
-    public GroupMember acceptRequest(Long groupMemberId);
-    public GroupMember removeMember(Long groupMemberId);
-    public GroupMember modifyMember(Long groupMemberId, GroupRole groupRole);
-    public GroupMember getGroupMemberById(Long id);
+    public GroupMember getMemberFromGroup(EventGroup eventGroup, Long userId);
+    void invite(CreateMemberDTO createMemberDTO, Long actorId);
+    public void acceptInvitation(Long userId, Long groupId, Long actorId);
+    void rejectInvitation(Long userId, Long groupId, Long actorId);
+    void request(CreateMemberDTO createMemberDTO, Long actorId);
+    public void rejectRequest(Long toBeAcceptedId, Long actorId, Long groupId);
+    public void acceptRequest(Long toBeAcceptedId, Long actorId, Long groupId);
+    public void removeMember(Long userId, Long groupId);
+    public void changeGroupMemberRole(Long groupId, Long toBeChangedId, Long actorId, GroupRole groupRole);
     public GroupMember getGroupMemberByGroupAndUser(Long userId, Long groupId);
 }
