@@ -1,12 +1,15 @@
 package com.projects.eventsbook.middleware;
 
 import com.projects.eventsbook.DTO.userDomain.UserProfileDTO;
+import com.projects.eventsbook.entity.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.util.WebUtils;
 
+@Component
 public class SessionInterceptor  implements HandlerInterceptor {
     @Override
     public boolean preHandle(@NonNull HttpServletRequest request,
