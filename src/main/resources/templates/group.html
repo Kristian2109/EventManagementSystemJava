@@ -55,7 +55,7 @@
                     <p th:text="${member.getUser().getFirstName()}" class="bold"></p>
                     <p th:text="${member.getUser().getEmail()}"></p>
                     <p th:text="${member.getGroupRole().toString()}"></p>
-                    <a th:href="'/groups/' + ${group.getId()} + '/members/' + ${member.getId()} + '/accept-request'"
+                    <a th:href="'/groups/' + ${group.getId()} + '/members/' + ${member.getUser().getId()} + '/accept-request'"
                        class="btn waves-effect waves-light secondary-content">
                         Accept
                     </a>

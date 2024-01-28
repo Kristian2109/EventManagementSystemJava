@@ -10,7 +10,7 @@
             <img src="images/yuna.jpg" alt="" class="circle">
             <span class="title" th:text="*{eventGroup.name}"></span>
             <p th:text="*{eventGroup.description}"></p>
-            <a th:href="'/groups/' + ${eventGroup.getId()} + '/members/' + ${userId} + '/request'"
+            <a th:href="'/groups/' + ${eventGroup.getId()} + '/members/request'"
                class="btn-floating btn-small waves-effect waves-light secondary-content">
                 <i class="material-icons">add</i>
             </a>
