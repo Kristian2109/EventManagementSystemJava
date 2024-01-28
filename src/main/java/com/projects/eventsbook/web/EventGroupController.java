@@ -80,7 +80,7 @@ public class EventGroupController {
             GroupMember groupMember;
             if (session.getAttribute("currentUser") != null) {
                 UserProfileDTO currentUser = (UserProfileDTO) session.getAttribute("currentUser");
-                groupMember = eventGroupService.getGroupMemberByGroupAndUser(currentUser.getId(), foundEventGroup.getId());
+                groupMember = memberService.getGroupMemberByGroupAndUser(currentUser.getId(), foundEventGroup.getId());
                 model.addAttribute(groupMember);
             }
             if (foundEventGroup.getImageFile() != null) {

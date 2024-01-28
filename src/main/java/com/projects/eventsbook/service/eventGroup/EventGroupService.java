@@ -17,14 +17,4 @@ public interface EventGroupService {
     public List<EventGroup> getEventGroupsByPage(Long userId, int pageSize, int pageNumber);
     public List<EventGroup> getUserGroups(Long userId);
     public List<EventGroup> getGroupsForUserToJoin(Long userId);
-    public GroupMember invite(CreateMemberDTO createMemberDTO);
-    public GroupMember acceptInvitation(Long groupMemberId);
-    public GroupMember rejectInvitation(Long groupMemberId);
-    public GroupMember request(CreateMemberDTO createMemberDTO);
-    public GroupMember rejectRequest(Long groupMemberId);
-    public GroupMember acceptRequest(Long groupMemberId);
-    public GroupMember removeMember(Long groupMemberId);
-    public GroupMember modifyMember(Long groupMemberId, GroupRole groupRole);
-    public GroupMember getGroupMemberById(Long id);
-    public GroupMember getGroupMemberByGroupAndUser(Long userId, Long groupId);
 }

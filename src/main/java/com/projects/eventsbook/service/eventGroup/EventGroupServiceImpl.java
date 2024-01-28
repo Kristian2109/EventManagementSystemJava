@@ -35,14 +35,12 @@ public class EventGroupServiceImpl implements EventGroupService{
 
     private final GroupRepositoryJpa groupRepositoryJpa;
     private final EventGroupValidator eventGroupValidator;
-    private final GroupMemberRepositoryJpa groupMemberRepositoryJpa;
     private final UserService userService;
     private final FileService fileService;
 
-    public EventGroupServiceImpl(GroupRepositoryJpa groupRepositoryJpa, EventGroupValidator eventGroupValidator, GroupMemberRepositoryJpa groupMemberRepositoryJpa, UserService userService, FileService fileService) {
+    public EventGroupServiceImpl(GroupRepositoryJpa groupRepositoryJpa, EventGroupValidator eventGroupValidator, UserService userService, FileService fileService) {
         this.groupRepositoryJpa = groupRepositoryJpa;
         this.eventGroupValidator = eventGroupValidator;
-        this.groupMemberRepositoryJpa = groupMemberRepositoryJpa;
         this.userService = userService;
         this.fileService = fileService;
     }
@@ -104,11 +102,6 @@ public class EventGroupServiceImpl implements EventGroupService{
     }
 
     @Override
-    public GroupMember invite(CreateMemberDTO createMemberDTO) {
-        return createMember(createMemberDTO, true);
-    }
-
-    @Override
     @Transactional(readOnly = true)
     public List<EventGroup> getUserGroups(Long userId) {
         User currentUser = userService.getById(userId);
@@ -127,122 +120,6 @@ public class EventGroupServiceImpl implements EventGroupService{
         return allGroups.stream().filter(eventGroup -> {
             return !eventGroup.hasUserInteracted(currentUser.getId());
         }).toList();
-    }
-
-    @Override
-    public GroupMember acceptInvitation(Long groupMemberId) {
-        return setMembership(groupMemberId, GroupMemberStatus.ACCEPTED, true);
-    }
-
-    @Override
-    public GroupMember rejectInvitation(Long groupMemberId) {
-        return setMembership(groupMemberId, GroupMemberStatus.REJECTED, true);
-    }
-
-//    private GroupMember decideInvitation(Long groupMemberId, GroupMemberStatus groupMemberStatus) {
-//        Optional<GroupMember> groupMember = groupMemberRepositoryJpa.findById(groupMemberId);
-//        if (groupMember.isEmpty()) {
-//            throw new NoEntityFoundException("No membership invitation found.");
-//        }
-//
-//        if (!groupMember.get().getIsInvited()) {
-//            throw new InvalidOperationException("User cannot accept when not invited.");
-//        }
-//
-//        groupMember.get().setStatus(groupMemberStatus);
-//        groupMember.get().setDecidedAt(LocalDateTime.now());
-//        groupMemberRepositoryJpa.save(groupMember.get());
-//        return groupMember.get();
-//    }
-
-    private GroupMember setMembership(Long groupMemberId, GroupMemberStatus groupMemberStatus, boolean isInvitation) {
-        GroupMember currentMember = getGroupMemberById(groupMemberId);
-
-        if (currentMember.getDecidedAt() != null) {
-            throw new InvalidOperationException("Membership is already decided.");
-        }
-
-        if (isInvitation && !currentMember.getIsInvited()) {
-            throw new InvalidOperationException("User cannot accept when not invited.");
-        }
-
-        if (!isInvitation && currentMember.getIsInvited()) {
-            throw new InvalidOperationException("User cannot accept when not invited.");
-        }
-
-        currentMember.setStatus(groupMemberStatus);
-        currentMember.setDecidedAt(LocalDateTime.now());
-        return groupMemberRepositoryJpa.save(currentMember);
-    }
-
-    private GroupMember createMember(CreateMemberDTO createMemberDTO, boolean isInvited) {
-        EventGroup eventGroup = get(createMemberDTO.getGroupId());
-        User toMakeMember = userService.getById(createMemberDTO.getUserId());
-        boolean isMemberExisting = eventGroup
-                .getMembers()
-                .stream()
-                .anyMatch(groupMember -> groupMember.getUser().getId().equals(toMakeMember.getId()));
-
-        if (isMemberExisting) {
-            throw new DuplicateResourceException("User already is a member.");
-        }
-        GroupMember newGroupMember = new GroupMember(
-                toMakeMember,
-                eventGroup,
-                GroupRole.valueOf(createMemberDTO.getRole()),
-                isInvited
-        );
-        newGroupMember.setStatus(GroupMemberStatus.PENDING);
-        return groupMemberRepositoryJpa.save(newGroupMember);
-    }
-
-    @Override
-    public GroupMember request(CreateMemberDTO createMemberDTO) {
-        return createMember(createMemberDTO, false);
-    }
-
-    @Override
-    public GroupMember rejectRequest(Long groupMemberId) {
-        return setMembership(groupMemberId, GroupMemberStatus.REJECTED, false);
-    }
-
-    @Override
-    public GroupMember acceptRequest(Long groupMemberId) {
-        return setMembership(groupMemberId, GroupMemberStatus.ACCEPTED, false);
-    }
-
-    @Override
-    public GroupMember removeMember(Long groupMemberId) {
-        GroupMember currentMember = getGroupMemberById(groupMemberId);
-        groupMemberRepositoryJpa.delete(currentMember);
-        return currentMember;
-    }
-
-    @Override
-    public GroupMember modifyMember(Long groupMemberId, GroupRole groupRole) {
-        GroupMember currentMember = getGroupMemberById(groupMemberId);
-        currentMember.setGroupRole(groupRole);
-        return groupMemberRepositoryJpa.save(currentMember);
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public GroupMember getGroupMemberById(Long id) {
-        Optional<GroupMember> groupMember = groupMemberRepositoryJpa.findById(id);
-        if (groupMember.isEmpty()) {
-            throw new NoEntityFoundException("No membership invitation found.");
-        }
-        return groupMember.get();
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public GroupMember getGroupMemberByGroupAndUser(Long userId, Long groupId) {
-        Optional<GroupMember> groupMember = groupMemberRepositoryJpa.findByUserIdAndEventGroupId(userId, groupId);
-        if (groupMember.isEmpty()) {
-            throw new NoEntityFoundException("No membership invitation found.");
-        }
-        return groupMember.get();
     }
 
 }
