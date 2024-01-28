@@ -6,17 +6,15 @@ import com.projects.eventsbook.DTO.groupDomain.CreateMemberDTO;
 import com.projects.eventsbook.DTO.userDomain.UserProfileDTO;
 import com.projects.eventsbook.entity.EventGroup;
 import com.projects.eventsbook.entity.GroupMember;
-import com.projects.eventsbook.entity.ImageFile;
-import com.projects.eventsbook.entity.User;
 import com.projects.eventsbook.exceptions.NoEntityFoundException;
 import com.projects.eventsbook.service.FileService;
 import com.projects.eventsbook.service.eventGroup.EventGroupService;
+import com.projects.eventsbook.service.eventGroup.MemberService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -27,11 +25,13 @@ public class EventGroupController {
 
     private final EventGroupService eventGroupService;
     private final FileService fileService;
+    private final MemberService memberService;
 
     @Autowired
-    public EventGroupController(EventGroupService eventGroupService, FileService fileService) {
+    public EventGroupController(EventGroupService eventGroupService, FileService fileService, MemberService memberService) {
         this.eventGroupService = eventGroupService;
         this.fileService = fileService;
+        this.memberService = memberService;
     }
 
     @GetMapping("/join")
@@ -47,22 +47,25 @@ public class EventGroupController {
         return "group-catalog";
     }
 
-    @GetMapping("/{groupId}/members/{userId}/request")
+    @GetMapping("/{groupId}/members/request")
     public String sendGroupMembershipRequest(@PathVariable("groupId") Long groupId,
-                                           @PathVariable("userId") Long userId) {
+                                             HttpSession session) {
+        UserProfileDTO userProfileDTO = (UserProfileDTO) session.getAttribute("currentUser");
         CreateMemberDTO createMemberDTO = new CreateMemberDTO(
-                userId,
+                userProfileDTO.getId(),
                 groupId,
                 "VIEWER"
         );
-        eventGroupService.request(createMemberDTO);
+        memberService.request(createMemberDTO, userProfileDTO.getId());
         return "redirect:/groups/join";
     }
 
-    @GetMapping("/{groupId}/members/{groupMemberId}/accept-request")
+    @GetMapping("/{groupId}/members/{userId}/accept-request")
     public String acceptGroupMembershipRequest(@PathVariable("groupId") Long groupId,
-                                             @PathVariable("groupMemberId") Long groupMemberId) {
-        eventGroupService.acceptRequest(groupMemberId);
+                                               @PathVariable("userId") Long userId,
+                                               HttpSession session) {
+        UserProfileDTO userProfileDTO = (UserProfileDTO) session.getAttribute("currentUser");
+        memberService.acceptRequest(userId, userProfileDTO.getId(), groupId);
         return "redirect:/groups/" + groupId;
     }
 

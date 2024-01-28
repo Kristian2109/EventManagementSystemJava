@@ -7,14 +7,14 @@ import com.projects.eventsbook.enumerations.GroupRole;
 
 public interface MemberService {
 
-    public GroupMember getMemberFromGroup(EventGroup eventGroup, Long userId);
+    GroupMember getMemberFromGroup(EventGroup eventGroup, Long userId);
     void invite(CreateMemberDTO createMemberDTO, Long actorId);
-    public void acceptInvitation(Long userId, Long groupId, Long actorId);
+    void acceptInvitation(Long userId, Long groupId, Long actorId);
     void rejectInvitation(Long userId, Long groupId, Long actorId);
     void request(CreateMemberDTO createMemberDTO, Long actorId);
-    public void rejectRequest(Long toBeAcceptedId, Long actorId, Long groupId);
-    public void acceptRequest(Long toBeAcceptedId, Long actorId, Long groupId);
-    public void removeMember(Long userId, Long groupId);
-    public void changeGroupMemberRole(Long groupId, Long toBeChangedId, Long actorId, GroupRole groupRole);
+    void rejectRequest(Long toBeAcceptedId, Long actorId, Long groupId);
+    void acceptRequest(Long toBeAcceptedId, Long actorId, Long groupId);
+    void removeMember(Long userId, Long groupId);
+    void changeGroupMemberRole(Long groupId, Long toBeChangedId, Long actorId, GroupRole groupRole);
     public GroupMember getGroupMemberByGroupAndUser(Long userId, Long groupId);
 }

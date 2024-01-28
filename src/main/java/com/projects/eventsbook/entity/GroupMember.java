@@ -58,4 +58,12 @@ public class GroupMember extends IdentityClassBase{
                 ", groupRole=" + groupRole +
                 '}';
     }
+
+    public boolean isUndecidedInvitation() {
+        return isInvited && decidedAt == null;
+    }
+
+    public boolean isUndecidedRequest() {
+        return !isInvited && decidedAt == null;
+    }
 }

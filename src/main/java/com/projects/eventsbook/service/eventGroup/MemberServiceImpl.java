@@ -68,7 +68,7 @@ public class MemberServiceImpl implements MemberService {
 
     private void createInvitationOrRequest(Long toBeMadeMemberId, EventGroup eventGroup, boolean isInvitation) {
         User toMakeMember = userService.getById(toBeMadeMemberId);
-        Optional<GroupMember> groupMember = groupRepositoryJpa.findMemberByGroupAndUserId(eventGroup.getId(),  toBeMadeMemberId);
+        Optional<GroupMember> groupMember = groupRepositoryJpa.findMemberByGroupAndUserId(toBeMadeMemberId, eventGroup.getId());
 
         if (groupMember.isPresent()) {
             throw new DuplicateResourceException("User has interacted with the group.");
@@ -117,12 +117,12 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void rejectRequest(Long toBeRejectedId, Long actorId, Long groupId) {
-        decideRequest(toBeRejectedId, groupId,actorId, GroupMemberStatus.REJECTED);
+        decideRequest(groupId, toBeRejectedId, actorId, GroupMemberStatus.REJECTED);
     }
 
     @Override
     public void acceptRequest(Long toBeAcceptedId, Long actorId, Long groupId) {
-        decideRequest(toBeAcceptedId, groupId ,actorId, GroupMemberStatus.ACCEPTED);
+        decideRequest(groupId, toBeAcceptedId, actorId, GroupMemberStatus.ACCEPTED);
     }
 
 
@@ -134,9 +134,8 @@ public class MemberServiceImpl implements MemberService {
         GroupMember toBeMadeMember = this.getMemberFromGroup(eventGroup, userId);
 
         if (!toBeMadeMember.isUndecidedRequest()) {
-            throw new InvalidOperationException("Membership is already decided.");
+            throw new InvalidOperationException("Membership is already decided or not a request.");
         }
-
 
         toBeMadeMember.setStatus(groupMemberStatus);
         toBeMadeMember.setDecidedAt(LocalDateTime.now());
