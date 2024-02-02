@@ -22,8 +22,8 @@
             <li th:each="event, eventStat : ${group.getEvents()}"
                 class="collection-item avatar">
                 <p class="bold" th:text="${event.getName()}"></p>
-<!--                <img th:if="${event.getImageFile() != null}" th:src="'data:image/jpg;base64,' + ${event.getImageFile().getEncoded()}" alt="" class="circle">-->
-<!--                <img th:if="${event.getImageFile() == null}" src="/no-photo.jpg" alt="" class="circle"/>-->
+<!--                <img th:if="${event.getImageFile() != null}" th:src="'data:image/jpg;base64,' + ${event.getImage()}" alt="" class="circle">-->
+                <img src="/no-photo.jpg" alt="" class="circle"/>
                 <span th:if="${event.getDescription().length() > 50}"
                       th:text="${#strings.substring(event.getDescription(), 0, 50) + '...'}"></span>
                 <span th:if="${event.getDescription().length() <= 50}"

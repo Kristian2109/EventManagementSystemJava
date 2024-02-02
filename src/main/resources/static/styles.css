@@ -137,3 +137,7 @@ main {
 }
 
 /* -------------------- Group -------------------- */
+
+.bought-tickets-container {
+    margin: auto 15%;
+}
