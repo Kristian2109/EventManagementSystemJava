@@ -1,7 +1,6 @@
 package com.projects.eventsbook.service.eventGroup;
 
 import com.projects.eventsbook.DAO.GroupRepositoryJpa;
-import com.projects.eventsbook.DAO.GroupMemberRepositoryJpa;
 import com.projects.eventsbook.DTO.groupDomain.CreateGroupDTO;
 import com.projects.eventsbook.DTO.groupDomain.CreateMemberDTO;
 import com.projects.eventsbook.DTO.groupDomain.UpdateGroupDTO;
