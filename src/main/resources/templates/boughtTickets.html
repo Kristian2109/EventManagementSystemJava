@@ -1,10 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/header.html :: head"></head>
 <body>
-$END$
+<main>
+    <div th:replace="fragments/navbar.html :: nav"> </div>
+    <div class="bought-tickets-container">
+        <h4 class="heading">Your Bought Tickets</h4>
+            <div class="offers row mx-auto d-flex flex-row justify-content-center">
+                <div class="card col s6" th:each="ticket : ${tickets}">
+                    <div class="card-image">
+                        <img th:src="'data:image/jpg;base64,' + ${ticket.getTicketImage()}">
+                        <span th:text="${ticket.ticketTemplate.event.name}" class="card-title"></span>
+
+                    </div>
+                    <div class="card-content">
+                        <p th:text="'Date of Event: ' + ${#temporals.format(ticket.ticketTemplate.event.beginTime, 'yyyy-MM-dd')}"></p>
+                        <p th:text="'Date of Order: ' + ${#temporals.format(ticket.createdAt, 'yyyy-MM-dd')}"></p>
+                        <p th:text="'Count: ' + ${ticket.ticketsCount}"></p>
+                        <p th:text="'Price per Ticket: ' + ${ticket.ticketTemplate.price}"></p>
+                        <p></p>
+                    </div>
+                    <div class="card-action">
+                        <a th:href="'/events/' + ${ticket.ticketTemplate.event.id}">Check the event</a>
+                    </div>
+                </div>
+        </div>
+    </div>
+</main>
+<footer th:include="fragments/footer.html :: foot"></footer>
 </body>
-</html>
