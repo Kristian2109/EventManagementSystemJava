@@ -7,6 +7,7 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 @Entity
@@ -87,5 +88,9 @@ public class Event extends IdentityClassBase {
             return reviews.subList(begin, reviews.size());
         }
         return reviews.subList(begin, begin + pageSize);
+    }
+
+    public String getImage() {
+        return imageFile.getEncoded();
     }
 }

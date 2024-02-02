@@ -1,6 +1,7 @@
 package com.projects.eventsbook.web;
 
 import com.projects.eventsbook.DTO.userDomain.UserProfileDTO;
+import com.projects.eventsbook.entity.BoughtTicket;
 import com.projects.eventsbook.entity.EventGroup;
 import com.projects.eventsbook.entity.User;
 import com.projects.eventsbook.mapper.UserMapper;
@@ -70,6 +71,13 @@ public class UserController {
         }
 
         return "redirect:profile";
+    }
+
+    @GetMapping("/tickets")
+    public String renderBoughtTickets(Model model, UserProfileDTO loggedUser) {
+        List<BoughtTicket> tickets= userService.getUserTickets(loggedUser.getId());
+        model.addAttribute("tickets", tickets);
+        return "boughtTickets";
     }
 
 }

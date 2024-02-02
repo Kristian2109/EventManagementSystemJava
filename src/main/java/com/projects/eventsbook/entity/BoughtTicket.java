@@ -13,6 +13,16 @@ import java.time.LocalDateTime;
 @Table(uniqueConstraints = {
         @UniqueConstraint(name = "unique_user_ticket_template_order", columnNames = {"user", "ticket_template"})
 })
+
+@NamedEntityGraph(name = "BoughtTicket.relations", attributeNodes = {
+        @NamedAttributeNode(
+                value = "ticketTemplate",
+                subgraph = "TicketTemplate.relations")
+}, subgraphs = {
+        @NamedSubgraph(name = "TicketTemplate.relations", attributeNodes = {
+                @NamedAttributeNode(value = "event")
+        })
+})
 public class BoughtTicket extends IdentityClassBase {
     @ManyToOne(optional = false)
     @NotNull
@@ -27,5 +37,9 @@ public class BoughtTicket extends IdentityClassBase {
         this.ticketTemplate = ticketTemplate;
         this.boughtBy = boughtBy;
         this.ticketsCount = ticketsCount;
+    }
+
+    public String getTicketImage() {
+        return ticketTemplate.getEvent().getImageFile().getEncoded();
     }
 }
