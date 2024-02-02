@@ -1,6 +1,7 @@
 package com.projects.eventsbook.DAO;
 
 import com.projects.eventsbook.entity.Event;
+import com.projects.eventsbook.entity.TicketTemplate;
 import lombok.NonNull;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -43,4 +44,7 @@ public interface EventRepositoryJPA extends JpaRepository<Event, Long> {
     @EntityGraph("Event.relations")
     @NonNull
     Optional<Event> findById(@NonNull Long id);
+
+    @Query("select ticket from TicketTemplate ticket where ticket.id = ?1")
+    Optional<TicketTemplate> findTicketTemplateById(Long id);
 }

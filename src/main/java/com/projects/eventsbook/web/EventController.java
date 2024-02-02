@@ -1,6 +1,5 @@
 package com.projects.eventsbook.web;
 
-import com.projects.eventsbook.DAO.ImageFileRepositoryJPA;
 import com.projects.eventsbook.DTO.eventDomain.CreateEventDTO;
 import com.projects.eventsbook.DTO.eventDomain.CreateReviewDTO;
 import com.projects.eventsbook.DTO.eventDomain.CreateTicketTemplateDTO;

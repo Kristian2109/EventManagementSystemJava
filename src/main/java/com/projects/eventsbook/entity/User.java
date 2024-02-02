@@ -54,7 +54,7 @@ public class User extends IdentityClassBase {
     private List<BoughtTicket> boughtTickets = new ArrayList<>();
     @OneToMany(mappedBy = "user")
     private List<GroupMember> memberships = new ArrayList<>();
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<TicketCard> ticketCards = new ArrayList<>();
 
     public User(String firstName, String lastName, String email, String password, String username, LocalDate bornAt, String phoneNumber, String identityNumber) {
