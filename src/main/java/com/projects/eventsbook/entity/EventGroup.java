@@ -37,7 +37,7 @@ public class EventGroup extends IdentityClassBase{
     @ManyToOne
     private ImageFile imageFile;
     @Min(0)
-    private long balance;
+    private double balance;
     @OneToMany(mappedBy = "eventGroup", cascade = CascadeType.ALL)
     private List<GroupMember> members = new ArrayList<>();
     @OneToMany(mappedBy = "eventGroup")

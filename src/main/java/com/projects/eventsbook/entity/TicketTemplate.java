@@ -2,6 +2,7 @@ package com.projects.eventsbook.entity;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
@@ -21,5 +22,6 @@ public class TicketTemplate extends IdentityClassBase{
     @NotNull
     private String description;
     @NotNull
+    @Min(0)
     private Integer currentTicketsCount;
 }

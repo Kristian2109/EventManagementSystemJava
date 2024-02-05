@@ -1,13 +1,14 @@
 package com.projects.eventsbook.service.ticketCard;
 
 import com.projects.eventsbook.DAO.*;
-import com.projects.eventsbook.entity.BoughtTicket;
 import com.projects.eventsbook.entity.TicketCard;
 import com.projects.eventsbook.entity.TicketTemplate;
 import com.projects.eventsbook.entity.User;
 import com.projects.eventsbook.exceptions.InvalidOperationException;
 import com.projects.eventsbook.exceptions.NoEntityFoundException;
+import com.projects.eventsbook.service.OrderService;
 import com.projects.eventsbook.service.user.UserService;
+import com.projects.eventsbook.util.RetrieveUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,26 +22,22 @@ public class CardServiceImpl implements CardService {
 
     private final CardRepositoryJPA cardRepositoryJPA;
     private final UserRepository userRepository;
-    private final BoughtTicketRepositoryJPA boughtTicketRepositoryJPA;
-    private final TicketTemplateRepositoryJPA ticketTemplateRepositoryJPA;
-    private final UserService userService;
     private final EventRepositoryJPA eventRepositoryJPA;
+    private final OrderService orderService;
 
     @Autowired
     public CardServiceImpl(CardRepositoryJPA cardRepositoryJPA, UserRepository userRepository,
                            BoughtTicketRepositoryJPA boughtTicketRepositoryJPA,
-                           TicketTemplateRepositoryJPA ticketTemplateRepositoryJPA, UserService userService, EventRepositoryJPA eventRepositoryJPA) {
+                           TicketTemplateRepositoryJPA ticketTemplateRepositoryJPA, UserService userService, EventRepositoryJPA eventRepositoryJPA, OrderService orderService) {
         this.cardRepositoryJPA = cardRepositoryJPA;
         this.userRepository = userRepository;
-        this.boughtTicketRepositoryJPA = boughtTicketRepositoryJPA;
-        this.ticketTemplateRepositoryJPA = ticketTemplateRepositoryJPA;
-        this.userService = userService;
         this.eventRepositoryJPA = eventRepositoryJPA;
+        this.orderService = orderService;
     }
 
     @Override
     public void addTicketToCard(Long userId, Long ticketTemplateId) {
-        User user = userService.getById(userId);
+        User user = RetrieveUtil.getByIdWithException(this.userRepository, userId);
         Optional<TicketTemplate> ticketTemplate = eventRepositoryJPA.findTicketTemplateById(ticketTemplateId);
         if (ticketTemplate.isEmpty()) {
             throw new NoEntityFoundException("No such ticket template");
@@ -66,25 +63,15 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public BoughtTicket checkoutCard(Long ticketCardId) {
-
-        TicketCard ticketCardToCheckout = getById(ticketCardId);
-        Integer ticketsToBuy = ticketCardToCheckout.getTicketsCount();
-        TicketTemplate ticketTemplateToBuy = ticketCardToCheckout.getTicketTemplate();
-        Integer currentTicketsCount = ticketTemplateToBuy.getCurrentTicketsCount();
-
-        if (ticketsToBuy > currentTicketsCount) {
-            throw new InvalidOperationException("You can buy only " + currentTicketsCount + " tickets.");
+    public void createOrderFromCard(Long ticketTemplateId, Long userId) {
+        User currentUser = RetrieveUtil.getByIdWithException(this.userRepository, userId);
+        Optional<TicketCard> card = currentUser.getTicketCardByTicket(ticketTemplateId);
+        if (card.isEmpty()) {
+            throw new NoEntityFoundException("No such card");
         }
-        ticketTemplateToBuy.setCurrentTicketsCount(ticketTemplateToBuy.getCurrentTicketsCount() - ticketsToBuy);
-        BoughtTicket boughtTickets = new BoughtTicket(
-                ticketTemplateToBuy,
-                ticketCardToCheckout.getUser(),
-                ticketsToBuy
-        );
-        cardRepositoryJPA.delete(ticketCardToCheckout);
-        ticketTemplateRepositoryJPA.save(ticketTemplateToBuy);
-        return boughtTicketRepositoryJPA.save(boughtTickets);
+        Long eventId = card.get().getTicketTemplate().getEvent().getId();
+        cardRepositoryJPA.delete(card.get());
+        orderService.createOrder(currentUser.getId(), eventId, card.get().getTicketTemplate().getId(), card.get().getTicketsCount());
     }
 
     @Transactional(readOnly = true)
@@ -100,7 +87,7 @@ public class CardServiceImpl implements CardService {
     @Transactional(readOnly = true)
     @Override
     public List<TicketCard> getCardsByUserId(Long userId) {
-        User currentUser = userService.getById(userId);
+        User currentUser = RetrieveUtil.getByIdWithException(this.userRepository, userId);
         return currentUser.getTicketCards();
     }
 
@@ -119,3 +106,4 @@ public class CardServiceImpl implements CardService {
                         eventTicketCard.getTicketTemplate().getId().equals(ticketTemplate.getId())).findFirst();
     }
 }
+

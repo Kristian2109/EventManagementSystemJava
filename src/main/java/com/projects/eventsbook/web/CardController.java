@@ -2,6 +2,7 @@ package com.projects.eventsbook.web;
 
 import com.projects.eventsbook.DTO.userDomain.UserProfileDTO;
 import com.projects.eventsbook.entity.TicketCard;
+import com.projects.eventsbook.service.OrderService;
 import com.projects.eventsbook.service.ticketCard.CardService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +16,12 @@ import java.util.List;
 @RequestMapping("/card")
 public class CardController {
     private final CardService cardService;
+    private final OrderService orderService;
 
     @Autowired
-    public CardController(CardService cardService) {
+    public CardController(CardService cardService, OrderService orderService) {
         this.cardService = cardService;
+        this.orderService = orderService;
     }
 
     @GetMapping
@@ -40,9 +43,9 @@ public class CardController {
         return "redirect:/events/" + eventId;
     }
 
-    @PostMapping("/{cardId}")
-    public String checkoutCard(@PathVariable Long cardId) {
-        cardService.checkoutCard(cardId);
+    @PostMapping("/ticket/{ticketTemplateId}")
+    public String checkoutCard(@PathVariable Long ticketTemplateId, UserProfileDTO loggedUser) {
+        cardService.createOrderFromCard(ticketTemplateId, loggedUser.getId());
         return "redirect:/card";
     }
 

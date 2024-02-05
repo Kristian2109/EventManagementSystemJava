@@ -7,7 +7,9 @@ import java.util.List;
 public interface CardService {
     public void addTicketToCard(Long userId, Long ticketTemplateId);
     public void removeTicketFromCard(Long ticketCardId);
-    public BoughtTicket checkoutCard(Long ticketCardId);
+
+    void createOrderFromCard(Long ticketTemplateId, Long userId);
+
     public TicketCard getById(Long id);
     List<TicketCard> getCardsByUserId(Long userId);
 }

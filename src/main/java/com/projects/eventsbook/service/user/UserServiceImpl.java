@@ -27,7 +27,6 @@ public class UserServiceImpl implements UserService {
         this.boughtTicketRepositoryJPA = boughtTicketRepositoryJPA;
     }
 
-
     @Override
     @Transactional
     public User update(User user) {

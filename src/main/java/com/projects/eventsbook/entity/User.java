@@ -12,6 +12,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Getter
@@ -50,7 +51,7 @@ public class User extends IdentityClassBase {
     @Column(unique = true)
     private String identityNumber;
     @Min(value = 0)
-    private long balance;
+    private double balance;
     @Lob
     private byte[] photo;
     @OneToMany(mappedBy = "boughtBy")
@@ -76,17 +77,6 @@ public class User extends IdentityClassBase {
         this.password = password;
     }
 
-    public boolean hasUserBeenOnEvent(Event event) {
-        return getBoughtTickets()
-                .stream()
-                .anyMatch(ticketLine -> {
-                    return ticketLine
-                            .getTicketTemplate()
-                            .getEvent()
-                            .equals(event);
-                });
-    }
-
     public String toString() {
         return "User{" +
                 "id=" + getId() +
@@ -95,5 +85,12 @@ public class User extends IdentityClassBase {
                 ", email='" + email + '\'' +
                 ", username='" + username + '\'' +
                 '}';
+    }
+
+    public Optional<TicketCard> getTicketCardByTicket(Long ticketId) {
+        return ticketCards
+                .stream()
+                .filter(ticketCard -> ticketCard.getTicketTemplate().getId().equals(ticketId))
+                .findFirst();
     }
 }
