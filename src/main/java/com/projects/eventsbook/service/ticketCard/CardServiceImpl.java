@@ -105,7 +105,9 @@ public class CardServiceImpl implements CardService {
     }
 
     private void createCard(User user, TicketTemplate ticketTemplate) {
-        cardRepositoryJPA.save(new TicketCard(user, ticketTemplate, 1));
+        List<TicketCard> userCards = user.getTicketCards();
+        userCards.add(new TicketCard(user, ticketTemplate, 1));
+        userRepository.save(user);
     }
 
 
