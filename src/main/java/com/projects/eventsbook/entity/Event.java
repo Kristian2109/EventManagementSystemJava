@@ -6,9 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @NoArgsConstructor
@@ -92,5 +90,12 @@ public class Event extends IdentityClassBase {
 
     public String getImage() {
         return imageFile.getEncoded();
+    }
+
+    public Optional<TicketTemplate> getTicketTemplateById(Long ticketTemplateId) {
+        return ticketTemplates
+                .stream()
+                .filter(ticketTemplate -> Objects.equals(ticketTemplate.getId(), ticketTemplateId))
+                .findFirst();
     }
 }

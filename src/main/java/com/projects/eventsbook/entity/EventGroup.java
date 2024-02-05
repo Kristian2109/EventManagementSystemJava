@@ -2,6 +2,7 @@ package com.projects.eventsbook.entity;
 
 import com.projects.eventsbook.enumerations.GroupMemberStatus;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
@@ -35,6 +36,8 @@ public class EventGroup extends IdentityClassBase{
     private Boolean isPrivate;
     @ManyToOne
     private ImageFile imageFile;
+    @Min(0)
+    private long balance;
     @OneToMany(mappedBy = "eventGroup", cascade = CascadeType.ALL)
     private List<GroupMember> members = new ArrayList<>();
     @OneToMany(mappedBy = "eventGroup")

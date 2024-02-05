@@ -3,6 +3,7 @@ package com.projects.eventsbook.entity;
 import com.projects.eventsbook.enumerations.ProfileStatus;
 import com.projects.eventsbook.enumerations.Role;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -48,6 +49,8 @@ public class User extends IdentityClassBase {
     private ProfileStatus profileStatus = ProfileStatus.ACTIVE;
     @Column(unique = true)
     private String identityNumber;
+    @Min(value = 0)
+    private long balance;
     @Lob
     private byte[] photo;
     @OneToMany(mappedBy = "boughtBy")
