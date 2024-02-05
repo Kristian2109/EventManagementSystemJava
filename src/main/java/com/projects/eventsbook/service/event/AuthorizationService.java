@@ -12,4 +12,6 @@ public interface AuthorizationService {
     public void validateChangeGroupRole(GroupMember actor, GroupMember toBeChanged, GroupRole role);
     public void validateManageMembershipRequest(GroupMember actor);
 
+    public boolean canMemberModifyGroup(GroupMember groupMember); // To do
+    public boolean canUserMakeReviewToEvent(User user, Event event); // To do
 }

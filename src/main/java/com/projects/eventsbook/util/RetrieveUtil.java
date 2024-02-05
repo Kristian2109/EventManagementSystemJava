@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public class RetrieveUtil {
-    public static <T extends IdentityClassBase> IdentityClassBase getByIdWithException(JpaRepository<T, Long> repository, Long id) {
+    public static <T extends IdentityClassBase> T getByIdWithException(JpaRepository<T, Long> repository, Long id) {
         Optional<T> foundEntity = repository.findById(id);
         if (foundEntity.isEmpty()) {
             throw new NoEntityFoundException("No entity from type " + repository.getClass().getTypeName() + " found");

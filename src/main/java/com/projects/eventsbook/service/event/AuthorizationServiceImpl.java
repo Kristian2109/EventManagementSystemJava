@@ -47,5 +47,15 @@ public class AuthorizationServiceImpl implements AuthorizationService{
         }
     }
 
+    @Override
+    public boolean canMemberModifyGroup(GroupMember groupMember) {
+        return false;
+    }
+
+    @Override
+    public boolean canUserMakeReviewToEvent(User user, Event event) {
+        return false;
+    }
+
 
 }
