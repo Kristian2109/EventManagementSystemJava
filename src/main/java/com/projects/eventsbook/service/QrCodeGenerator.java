@@ -6,5 +6,5 @@ import java.io.File;
 import java.io.IOException;
 
 public interface QrCodeGenerator {
-    String generateQrCode(String data) throws WriterException, IOException;
+    byte[] generateQrCode(String data) throws WriterException, IOException;
 }
