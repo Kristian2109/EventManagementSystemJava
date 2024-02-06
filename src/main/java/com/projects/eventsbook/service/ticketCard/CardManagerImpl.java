@@ -16,17 +16,15 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
-@Transactional
 @Service
-public class CardServiceImpl implements CardService {
-
+public class CardManagerImpl implements CardManager{
     private final CardRepositoryJPA cardRepositoryJPA;
     private final UserRepository userRepository;
     private final EventRepositoryJPA eventRepositoryJPA;
     private final OrderService orderService;
 
     @Autowired
-    public CardServiceImpl(CardRepositoryJPA cardRepositoryJPA, UserRepository userRepository,
+    public CardManagerImpl(CardRepositoryJPA cardRepositoryJPA, UserRepository userRepository,
                            BoughtTicketRepositoryJPA boughtTicketRepositoryJPA,
                            TicketTemplateRepositoryJPA ticketTemplateRepositoryJPA, UserService userService, EventRepositoryJPA eventRepositoryJPA, OrderService orderService) {
         this.cardRepositoryJPA = cardRepositoryJPA;
@@ -48,7 +46,7 @@ public class CardServiceImpl implements CardService {
             return;
         }
         currentTicketCard.get().incrementTicketsCount();
-        userRepository.save(user);
+        cardRepositoryJPA.save(currentTicketCard.get());
     }
 
     @Override
@@ -92,9 +90,7 @@ public class CardServiceImpl implements CardService {
     }
 
     private void createCard(User user, TicketTemplate ticketTemplate) {
-        List<TicketCard> userCards = user.getTicketCards();
-        userCards.add(new TicketCard(user, ticketTemplate, 1));
-        userRepository.save(user);
+        cardRepositoryJPA.save(new TicketCard(user, ticketTemplate, 1));
     }
 
 
@@ -106,4 +102,3 @@ public class CardServiceImpl implements CardService {
                         eventTicketCard.getTicketTemplate().getId().equals(ticketTemplate.getId())).findFirst();
     }
 }
-
