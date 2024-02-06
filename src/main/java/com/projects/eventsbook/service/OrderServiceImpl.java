@@ -13,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.IntStream;
 
 @Transactional
 @Component
@@ -54,7 +56,17 @@ public class OrderServiceImpl implements OrderService{
         BoughtTicket order = new BoughtTicket(ticket, currentUser, ticketsCount);
         eventRepository.save(currentEvent);
         userRepository.save(currentUser);
+        createActivations(order);
         boughtTicketRepository.save(order);
         groupRepository.save(currentEvent.getEventGroup());
+    }
+
+    private void createActivations(BoughtTicket order) {
+        IntStream.range(0, order.getTicketsCount())
+                .forEach(number -> {
+                    order
+                            .getTicketActivations()
+                            .add(new TicketActivation(UUID.randomUUID().toString(), order));
+                });
     }
 }

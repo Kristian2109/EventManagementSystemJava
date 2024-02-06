@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -15,6 +17,9 @@ import java.time.LocalDateTime;
 })
 
 @NamedEntityGraph(name = "BoughtTicket.relations", attributeNodes = {
+        @NamedAttributeNode(
+                value = "ticketActivations"
+        ),
         @NamedAttributeNode(
                 value = "ticketTemplate",
                 subgraph = "TicketTemplate.relations")
@@ -32,6 +37,8 @@ public class BoughtTicket extends IdentityClassBase {
     private User boughtBy;
     @NotNull
     private Integer ticketsCount;
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<TicketActivation> ticketActivations = new ArrayList<>();
 
     public BoughtTicket(TicketTemplate ticketTemplate, User boughtBy, Integer ticketsCount) {
         this.ticketTemplate = ticketTemplate;
