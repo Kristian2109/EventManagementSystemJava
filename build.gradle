@@ -28,6 +28,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.security:spring-security-web:6.1.2'
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-java8time:3.0.4.RELEASE'
+	implementation 'com.google.zxing:core:3.4.1'
+	implementation 'com.google.zxing:javase:3.4.1'
 
 	implementation 'org.hibernate:hibernate-jpamodelgen:6.2.7.Final'
 	annotationProcessor('org.hibernate:hibernate-jpamodelgen:6.2.7.Final')
