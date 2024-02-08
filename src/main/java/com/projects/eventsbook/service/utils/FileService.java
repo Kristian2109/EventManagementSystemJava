@@ -1,4 +1,4 @@
-package com.projects.eventsbook.service;
+package com.projects.eventsbook.service.utils;
 
 import com.projects.eventsbook.entity.ImageFile;
 import org.springframework.web.multipart.MultipartFile;

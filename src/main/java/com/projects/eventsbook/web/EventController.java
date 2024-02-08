@@ -8,7 +8,7 @@ import com.projects.eventsbook.entity.Event;
 import com.projects.eventsbook.entity.ImageFile;
 import com.projects.eventsbook.entity.Review;
 import com.projects.eventsbook.entity.User;
-import com.projects.eventsbook.service.FileService;
+import com.projects.eventsbook.service.utils.FileService;
 import com.projects.eventsbook.service.event.EventService;
 import com.projects.eventsbook.service.user.UserService;
 import jakarta.servlet.http.HttpSession;
@@ -20,8 +20,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.IOException;
-import java.util.Base64;
 import java.util.List;
 
 @Controller

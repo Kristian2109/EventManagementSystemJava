@@ -9,7 +9,7 @@ import com.projects.eventsbook.enumerations.GroupMemberStatus;
 import com.projects.eventsbook.enumerations.GroupRole;
 import com.projects.eventsbook.exceptions.InvalidOperationException;
 import com.projects.eventsbook.exceptions.NoEntityFoundException;
-import com.projects.eventsbook.service.FileService;
+import com.projects.eventsbook.service.utils.FileService;
 import com.projects.eventsbook.service.eventGroup.EventGroupService;
 import com.projects.eventsbook.service.user.UserService;
 import org.springframework.beans.BeanUtils;

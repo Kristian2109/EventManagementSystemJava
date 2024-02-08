@@ -1,4 +1,4 @@
-package com.projects.eventsbook.service;
+package com.projects.eventsbook.service.utils;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
@@ -9,7 +9,6 @@ import com.google.zxing.common.BitMatrix;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;

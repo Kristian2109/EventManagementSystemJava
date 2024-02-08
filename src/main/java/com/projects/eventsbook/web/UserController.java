@@ -5,6 +5,7 @@ import com.projects.eventsbook.entity.BoughtTicket;
 import com.projects.eventsbook.entity.EventGroup;
 import com.projects.eventsbook.entity.User;
 import com.projects.eventsbook.mapper.UserMapper;
+import com.projects.eventsbook.service.utils.QrCodeGenerator;
 import com.projects.eventsbook.service.eventGroup.EventGroupService;
 import com.projects.eventsbook.service.user.UserService;
 import jakarta.servlet.http.HttpSession;
@@ -24,11 +25,13 @@ public class UserController {
 
     private final UserService userService;
     private final EventGroupService eventGroupService;
+    private final QrCodeGenerator qrCodeGenerator;
 
     @Autowired
-    public UserController(UserService userService, EventGroupService eventGroupService) {
+    public UserController(UserService userService, EventGroupService eventGroupService, QrCodeGenerator qrCodeGenerator) {
         this.userService = userService;
         this.eventGroupService = eventGroupService;
+        this.qrCodeGenerator = qrCodeGenerator;
     }
 
     @GetMapping
@@ -73,11 +76,15 @@ public class UserController {
         return "redirect:profile";
     }
 
-    @GetMapping("/tickets")
+    @GetMapping("/orders")
     public String renderBoughtTickets(Model model, UserProfileDTO loggedUser) {
-        List<BoughtTicket> tickets= userService.getUserTickets(loggedUser.getId());
+        List<BoughtTicket> tickets = userService.getUserTickets(loggedUser.getId());
         model.addAttribute("tickets", tickets);
         return "boughtTickets";
     }
 
+    @GetMapping("/tickets")
+    public String renderTickets(Model model, UserProfileDTO loggedUser) {
+        return "qrcode";
+    }
 }

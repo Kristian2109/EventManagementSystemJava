@@ -7,7 +7,7 @@ import com.projects.eventsbook.DTO.userDomain.UserProfileDTO;
 import com.projects.eventsbook.entity.EventGroup;
 import com.projects.eventsbook.entity.GroupMember;
 import com.projects.eventsbook.exceptions.NoEntityFoundException;
-import com.projects.eventsbook.service.FileService;
+import com.projects.eventsbook.service.utils.FileService;
 import com.projects.eventsbook.service.eventGroup.EventGroupService;
 import com.projects.eventsbook.service.eventGroup.MemberService;
 import jakarta.servlet.http.HttpSession;
