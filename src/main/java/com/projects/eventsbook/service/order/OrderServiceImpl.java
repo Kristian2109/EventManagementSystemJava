@@ -1,4 +1,4 @@
-package com.projects.eventsbook.service;
+package com.projects.eventsbook.service.order;
 
 import com.projects.eventsbook.DAO.BoughtTicketRepositoryJPA;
 import com.projects.eventsbook.DAO.EventRepositoryJPA;
@@ -11,7 +11,6 @@ import com.projects.eventsbook.util.RetrieveUtil;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.IntStream;

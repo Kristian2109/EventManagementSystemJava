@@ -3,8 +3,10 @@ package com.projects.eventsbook.web;
 import com.projects.eventsbook.DTO.userDomain.UserProfileDTO;
 import com.projects.eventsbook.entity.BoughtTicket;
 import com.projects.eventsbook.entity.EventGroup;
+import com.projects.eventsbook.entity.TicketActivation;
 import com.projects.eventsbook.entity.User;
 import com.projects.eventsbook.mapper.UserMapper;
+import com.projects.eventsbook.service.order.TicketManager;
 import com.projects.eventsbook.service.utils.QrCodeGenerator;
 import com.projects.eventsbook.service.eventGroup.EventGroupService;
 import com.projects.eventsbook.service.user.UserService;
@@ -25,13 +27,13 @@ public class UserController {
 
     private final UserService userService;
     private final EventGroupService eventGroupService;
-    private final QrCodeGenerator qrCodeGenerator;
+    private final TicketManager ticketManager;
 
     @Autowired
-    public UserController(UserService userService, EventGroupService eventGroupService, QrCodeGenerator qrCodeGenerator) {
+    public UserController(UserService userService, EventGroupService eventGroupService, QrCodeGenerator qrCodeGenerator, TicketManager ticketManager) {
         this.userService = userService;
         this.eventGroupService = eventGroupService;
-        this.qrCodeGenerator = qrCodeGenerator;
+        this.ticketManager = ticketManager;
     }
 
     @GetMapping
@@ -85,6 +87,8 @@ public class UserController {
 
     @GetMapping("/tickets")
     public String renderTickets(Model model, UserProfileDTO loggedUser) {
-        return "qrcode";
+        List<BoughtTicket> tickets = ticketManager.getUpcomingUserTickets(loggedUser.getId());
+        model.addAttribute("tickets", tickets);
+        return "tickets";
     }
 }

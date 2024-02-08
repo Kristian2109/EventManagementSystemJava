@@ -25,7 +25,10 @@ import java.util.List;
                 subgraph = "TicketTemplate.relations")
 }, subgraphs = {
         @NamedSubgraph(name = "TicketTemplate.relations", attributeNodes = {
-                @NamedAttributeNode(value = "event")
+                @NamedAttributeNode(value = "event", subgraph = "Event.image")
+        }),
+        @NamedSubgraph(name = "Event.image", attributeNodes = {
+                @NamedAttributeNode(value = "imageFile")
         })
 })
 public class BoughtTicket extends IdentityClassBase {
@@ -48,5 +51,13 @@ public class BoughtTicket extends IdentityClassBase {
 
     public String getTicketImage() {
         return ticketTemplate.getEvent().getImageFile().getEncoded();
+    }
+
+    @Override
+    public String toString() {
+        return "BoughtTicket{" +
+                "ticketTemplate=" + ticketTemplate +
+                ", ticketsCount=" + ticketsCount +
+                '}';
     }
 }
