@@ -7,7 +7,6 @@ import com.projects.eventsbook.entity.User;
 import com.projects.eventsbook.exceptions.InvalidOperationException;
 import com.projects.eventsbook.exceptions.NoEntityFoundException;
 import com.projects.eventsbook.service.order.OrderService;
-import com.projects.eventsbook.service.user.UserService;
 import com.projects.eventsbook.util.RetrieveUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,8 +24,7 @@ public class CardManagerImpl implements CardManager{
 
     @Autowired
     public CardManagerImpl(CardRepositoryJPA cardRepositoryJPA, UserRepository userRepository,
-                           BoughtTicketRepositoryJPA boughtTicketRepositoryJPA,
-                           TicketTemplateRepositoryJPA ticketTemplateRepositoryJPA, UserService userService, EventRepositoryJPA eventRepositoryJPA, OrderService orderService) {
+                           EventRepositoryJPA eventRepositoryJPA, OrderService orderService) {
         this.cardRepositoryJPA = cardRepositoryJPA;
         this.userRepository = userRepository;
         this.eventRepositoryJPA = eventRepositoryJPA;
