@@ -8,6 +8,7 @@ import com.projects.eventsbook.entity.Event;
 import com.projects.eventsbook.entity.ImageFile;
 import com.projects.eventsbook.entity.Review;
 import com.projects.eventsbook.entity.User;
+import com.projects.eventsbook.service.order.TicketManager;
 import com.projects.eventsbook.service.utils.FileService;
 import com.projects.eventsbook.service.event.EventService;
 import com.projects.eventsbook.service.user.UserService;
@@ -28,13 +29,15 @@ public class EventController {
     private final EventService eventService;
     private final UserService userService;
     private final FileService fileService;
+    private final TicketManager ticketManager;
 
 
     @Autowired
-    public EventController(EventService eventService, UserService userService, FileService fileService) {
+    public EventController(EventService eventService, UserService userService, FileService fileService, TicketManager ticketManager) {
         this.eventService = eventService;
         this.userService = userService;
         this.fileService = fileService;
+        this.ticketManager = ticketManager;
     }
 
     @GetMapping("/create")
@@ -149,6 +152,20 @@ public class EventController {
             redirectAttributes.addAttribute("error", e.getMessage());
         }
 
+        return "redirect:/events/" + eventId;
+    }
+
+    @PostMapping("/{eventId}/tickets/activate")
+    public String activateTicket(@PathVariable("eventId") Long eventId,
+                                 @RequestParam Long ticketId,
+                                 UserProfileDTO userProfileDTO,
+                                 RedirectAttributes redirectAttributes
+                                 ) {
+        try {
+            ticketManager.activateTicketByUser(eventId, ticketId, userProfileDTO.getId());
+        } catch (Exception e) {
+            redirectAttributes.addAttribute("error", e.getMessage());
+        }
         return "redirect:/events/" + eventId;
     }
 }

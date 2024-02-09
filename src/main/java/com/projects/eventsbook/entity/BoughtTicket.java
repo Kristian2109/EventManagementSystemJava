@@ -60,4 +60,5 @@ public class BoughtTicket extends IdentityClassBase {
                 ", ticketsCount=" + ticketsCount +
                 '}';
     }
+
 }

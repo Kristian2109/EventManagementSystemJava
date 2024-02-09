@@ -50,11 +50,11 @@
             </table>
         </div>
         <div th:if="${isAdmin}">
-            <form action="/tickets/activate" method="post">
+            <form th:action="${eventId} + '/tickets/activate'" method="post">
                 <div class="row s12">
                     Activate a ticket using the ticket number:
                     <div class="input-field inline">
-                        <input id="ticketNumber" type="text" class="validate">
+                        <input id="ticketId" type="number" class="validate" name="ticketId">
                     </div>
                     <button class="waves-effect waves-light btn" type="submit">Activate</button>
                 </div>
