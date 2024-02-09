@@ -4,12 +4,13 @@
 <main>
     <div th:replace="fragments/navbar.html :: nav"> </div>
     <div class="card-container">
-        <h3 th:if="${tickets == null || tickets.isEmpty()}">No Items in your card</h3>
+        <h3 th:if="${tickets == null || tickets.isEmpty()}">No Items to activate</h3>
         <div th:if="${tickets != null && !tickets.isEmpty()}">
             <h3>Your tickets to activate</h3>
             <table>
                 <thead>
                 <tr>
+                    <th>Number</th>
                     <th>Event Title</th>
                     <th>Begins at</th>
                     <th>Ends at</th>
@@ -19,18 +20,14 @@
                 </thead>
                 <tbody>
                 <div th:each="order : ${tickets}" >
-                    <tr th:each="ticket : ${order.getTicketActivations()}" class="collection-item row">
+                    <tr th:each="ticket : ${order.getTicketActivations()}" class="collection-item row ticket-container">
+                        <td th:text="${ticket.getId()}"></td>
                         <td th:text="${order.getTicketTemplate().getEvent().name}"></td>
                         <td th:text="${#temporals.format(order.getTicketTemplate().getEvent().beginTime, 'yyyy-MM-dd hh:mm')}"></td>
                         <td th:text="${#temporals.format(order.getTicketTemplate().getEvent().endTime, 'yyyy-MM-dd hh:mm')}"></td>
                         <td th:text="${order.getTicketTemplate().price} + 'lv'"></td>
-                        <td th:if="${ticket.activationDate != null}" th:text="${#temporals.format(ticket.activationDate, 'yyyy-MM-dd-hh')}"></td>
+                        <td th:if="${ticket.activationDate != null}" th:text="${#temporals.format(ticket.activationDate, 'yyyy-MM-dd hh:mm')}"></td>
                         <td th:unless="${ticket.activationDate != null}" th:text="'No activated!'"></td>
-                        <td>
-                            <form method="post" th:action="'/profile/tickets/activate?token' + ${ticket.getActivationToken()}">
-                                <button class="waves-effect waves-light btn" type="submit">Buy</button>
-                            </form>
-                        </td>
                     </tr>
                 </div>
                 </tbody>

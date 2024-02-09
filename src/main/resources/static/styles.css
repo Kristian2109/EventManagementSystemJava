@@ -40,7 +40,7 @@ main {
 }
 
 .user-profile {
-    margin: auto 25%;
+    margin: auto 20%;
 }
 
 .bold {
@@ -141,3 +141,5 @@ main {
 .bought-tickets-container {
     margin: auto 15%;
 }
+
+/* -------------------- Group -------------------- */
