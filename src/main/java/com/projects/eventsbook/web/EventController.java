@@ -42,12 +42,11 @@ public class EventController {
 
     @GetMapping("/create")
     public String renderCreate(Model model,
-                               HttpSession httpSession,
+                               UserProfileDTO userProfileDTO,
                                RedirectAttributes redirectAttributes,
                                @RequestParam("groupId") Long groupId) {
         try {
             CreateEventDTO toCreate = new CreateEventDTO();
-            UserProfileDTO userProfileDTO = (UserProfileDTO) httpSession.getAttribute("currentUser");
             toCreate.setCreatedById(userProfileDTO.getId());
             toCreate.setEventGroupId(groupId);
             model.addAttribute("createEventDTO", toCreate);
@@ -68,7 +67,6 @@ public class EventController {
             return "redirect:/events/create";
         }
         try {
-
             ImageFile createdFile = fileService.storeFile(file);
             createEventDTO.setImageDataId(createdFile.getId());
             Event createdEvent = eventService.create(createEventDTO);
@@ -81,7 +79,8 @@ public class EventController {
 
     @GetMapping("/{eventId}")
     public String renderEvent(@PathVariable Long eventId,
-                              Model model, HttpSession session,
+                              Model model,
+                              UserProfileDTO userProfileDTO,
                               RedirectAttributes redirectAttributes,
                               @RequestParam(name = "pageNumberReviews", defaultValue = "1") int pageNumber,
                               @RequestParam(name = "pageSizeReviews", defaultValue = "10") int pageSize
@@ -91,7 +90,6 @@ public class EventController {
         if (event.getImageFile() != null) {
             model.addAttribute("image", fileService.encodeImage(event.getImageFile()));
         }
-        UserProfileDTO userProfileDTO = (UserProfileDTO) session.getAttribute("currentUser");
         User user = userService.getById(userProfileDTO.getId());
         if (!event.canUserAccessEvent(user)) {
             redirectAttributes.addFlashAttribute("error", "User don't have access to the event.");
@@ -134,7 +132,7 @@ public class EventController {
 
     @PostMapping("/{eventId}/reviews")
     public String createReview(@PathVariable("eventId") Long eventId,
-                               HttpSession session,
+                               UserProfileDTO currentUser,
                                @ModelAttribute("createReviewDTO") CreateReviewDTO createReviewDTO,
                                BindingResult bindingResult,
                                RedirectAttributes redirectAttributes) {
@@ -144,7 +142,6 @@ public class EventController {
         }
 
         try {
-            UserProfileDTO currentUser = (UserProfileDTO) session.getAttribute("currentUser");
             createReviewDTO.setReviewerId(currentUser.getId());
             createReviewDTO.setEventId(eventId);
             eventService.makeReviewToEvent(createReviewDTO);

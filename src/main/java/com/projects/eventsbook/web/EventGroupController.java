@@ -37,49 +37,44 @@ public class EventGroupController {
     @GetMapping("/join")
     public String getGroupsForJoining(@RequestParam(name = "pageNumber", defaultValue = "0") int pageNumber,
                                       @RequestParam(name = "pageSize", defaultValue = "20") int pageSize,
-                                      HttpSession session,
+                                      UserProfileDTO currentUser,
                                       Model model) {
-
-        UserProfileDTO userProfileDTO = (UserProfileDTO) session.getAttribute("currentUser");
-        List<EventGroup> eventGroups = eventGroupService.getGroupsForUserToJoin(userProfileDTO.getId());
+        List<EventGroup> eventGroups = eventGroupService.getGroupsForUserToJoin(currentUser.getId());
         model.addAttribute("groups", eventGroups);
-        model.addAttribute("userId", userProfileDTO.getId());
+        model.addAttribute("userId", currentUser.getId());
         return "group-catalog";
     }
 
     @GetMapping("/{groupId}/members/request")
     public String sendGroupMembershipRequest(@PathVariable("groupId") Long groupId,
-                                             HttpSession session) {
-        UserProfileDTO userProfileDTO = (UserProfileDTO) session.getAttribute("currentUser");
+                                             UserProfileDTO currentUser) {;
         CreateMemberDTO createMemberDTO = new CreateMemberDTO(
-                userProfileDTO.getId(),
+                currentUser.getId(),
                 groupId,
                 "VIEWER"
         );
-        memberService.request(createMemberDTO, userProfileDTO.getId());
+        memberService.request(createMemberDTO, currentUser.getId());
         return "redirect:/groups/join";
     }
 
     @GetMapping("/{groupId}/members/{userId}/accept-request")
     public String acceptGroupMembershipRequest(@PathVariable("groupId") Long groupId,
                                                @PathVariable("userId") Long userId,
-                                               HttpSession session) {
-        UserProfileDTO userProfileDTO = (UserProfileDTO) session.getAttribute("currentUser");
-        memberService.acceptRequest(userId, userProfileDTO.getId(), groupId);
+                                               UserProfileDTO currentUser) {
+        memberService.acceptRequest(userId, currentUser.getId(), groupId);
         return "redirect:/groups/" + groupId;
     }
 
     @GetMapping("/{groupId}")
     public String renderGroup(@PathVariable("groupId") Long groupId,
-                              HttpSession session,
+                              UserProfileDTO currentUser,
                               Model model,
                               RedirectAttributes redirectAttributes) {
         try {
             EventGroup foundEventGroup = eventGroupService.get(groupId);
             model.addAttribute("group", foundEventGroup);
             GroupMember groupMember;
-            if (session.getAttribute("currentUser") != null) {
-                UserProfileDTO currentUser = (UserProfileDTO) session.getAttribute("currentUser");
+            if (currentUser != null) {
                 groupMember = memberService.getGroupMemberByGroupAndUser(currentUser.getId(), foundEventGroup.getId());
                 model.addAttribute(groupMember);
             }
@@ -95,10 +90,9 @@ public class EventGroupController {
 
     @GetMapping("/create")
     public String renderCreate(Model model,
-                               HttpSession session,
+                               UserProfileDTO currentUser,
                                RedirectAttributes redirectAttributes) {
         CreateGroupDTO toCreate= new CreateGroupDTO();
-        UserProfileDTO currentUser = (UserProfileDTO) session.getAttribute("currentUser");
         if (currentUser.getIdentityNumber() == null || currentUser.getIdentityNumber().isEmpty()) {
             redirectAttributes.addFlashAttribute("error", "User should have identity number!");
             return "redirect:/profile";

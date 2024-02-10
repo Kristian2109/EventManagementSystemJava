@@ -22,21 +22,18 @@ public class CardController {
     }
 
     @GetMapping
-    public String getCardsForUser(HttpSession httpSession,
-                                  Model model) {
-        UserProfileDTO currentUser = (UserProfileDTO) httpSession.getAttribute("currentUser");
+    public String getCardsForUser(Model model,
+                                  UserProfileDTO currentUser) {
         List<TicketCard> userCards = cardManager.getCardsByUserId(currentUser.getId());
         model.addAttribute(userCards);
         return "card";
     }
 
     @GetMapping("/tickets/{ticketTemplateId}")
-    public String addTicketToCard(HttpSession session,
-                                  @PathVariable Long ticketTemplateId,
-                                  @RequestParam("eventId") Long eventId) {
-        UserProfileDTO currentUser = (UserProfileDTO) session.getAttribute("currentUser");
-        Long userId = currentUser.getId();
-        cardManager.addTicketToCard(userId, ticketTemplateId);
+    public String addTicketToCard(@PathVariable Long ticketTemplateId,
+                                  @RequestParam("eventId") Long eventId,
+                                  UserProfileDTO currentUser) {
+        cardManager.addTicketToCard(currentUser.getId(), ticketTemplateId);
         return "redirect:/events/" + eventId;
     }
 

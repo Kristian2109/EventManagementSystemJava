@@ -37,23 +37,20 @@ public class UserController {
     }
 
     @GetMapping
-    public String personalInfo(Model model, HttpSession session) {
-        UserProfileDTO currentUser = (UserProfileDTO) session.getAttribute("currentUser");
+    public String personalInfo(Model model, UserProfileDTO currentUser) {
         model.addAttribute("userProfileDTO", currentUser);
         return "profile";
     }
 
     @GetMapping("/groups")
-    public String groups(Model model, HttpSession session) {
-        UserProfileDTO currentUser = (UserProfileDTO) session.getAttribute("currentUser");
+    public String groups(Model model, UserProfileDTO currentUser) {
         List<EventGroup> eventGroups = eventGroupService.getUserGroups(currentUser.getId());
         model.addAttribute("groups", eventGroups);
         return "user-groups";
     }
 
     @GetMapping("/update")
-    private @NonNull String updatePersonalInfo(Model model, HttpSession session) {
-        UserProfileDTO currentUser = (UserProfileDTO) session.getAttribute("currentUser");
+    private @NonNull String updatePersonalInfo(Model model, UserProfileDTO currentUser) {
         model.addAttribute("userProfileDTO", currentUser);
         return "update-user";
     }
