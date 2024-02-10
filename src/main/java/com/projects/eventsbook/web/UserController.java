@@ -4,6 +4,7 @@ import com.projects.eventsbook.DTO.userDomain.UserProfileDTO;
 import com.projects.eventsbook.entity.BoughtTicket;
 import com.projects.eventsbook.entity.EventGroup;
 import com.projects.eventsbook.entity.User;
+import com.projects.eventsbook.exceptions.InvalidOperationException;
 import com.projects.eventsbook.mapper.UserMapper;
 import com.projects.eventsbook.service.order.TicketManager;
 import com.projects.eventsbook.service.user.BalanceManager;
@@ -97,16 +98,32 @@ public class UserController {
     @PostMapping("/balance/add")
     public String addBalance(UserProfileDTO loggedUser,
                              @RequestParam("currentBalance") Double currentBalance,
-                             @RequestParam("amount") Double amountToAdd) {
-        balanceManager.addMoneyToUser(loggedUser.getId(), currentBalance, amountToAdd);
+                             @RequestParam("amount") Double amountToAdd,
+                             RedirectAttributes redirectAttributes) {
+        try {
+            balanceManager.addMoneyToUser(loggedUser.getId(), currentBalance, amountToAdd);
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        }
         return "redirect:/profile";
     }
 
     @PostMapping("/balance/draw")
     public String drawMoneyFromAccount(UserProfileDTO loggedUser,
                                        @RequestParam("currentBalance") Double currentBalance,
-                                       @RequestParam("amount") Double amountToDraw) {
-        balanceManager.drawMoneyFromUser(loggedUser.getId(), currentBalance, amountToDraw);
+                                       @RequestParam("amount") Double amountToDraw,
+                                       RedirectAttributes redirectAttributes) {
+        try {
+            balanceManager.drawMoneyFromUser(loggedUser.getId(), currentBalance, amountToDraw);
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        }
+
         return "redirect:/profile";
+    }
+
+    @GetMapping("/error")
+    public String renderError() {
+        return "error";
     }
 }

@@ -20,7 +20,13 @@ public class BalanceManagerImpl implements BalanceManager {
 
     @Override
     public void addMoneyToUser(Long userId, Double currentBalance, Double amountToAdd) {
-        executeTransaction(userId, currentBalance, amountToAdd, "+");
+        User currentUser = RetrieveUtil.getByIdWithException(this.userRepository, userId);
+        if (currentUser.getBalance() != currentBalance) {
+            return;
+        }
+        currentUser.setBalance(currentBalance + amountToAdd);
+
+        userRepository.save(currentUser);
     }
 
     @Override
