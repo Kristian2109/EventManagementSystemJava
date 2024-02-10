@@ -47,6 +47,8 @@ public class Event extends IdentityClassBase {
     private List<TicketTemplate> ticketTemplates = new ArrayList<>();
     @ManyToOne
     private ImageFile imageFile;
+    @ManyToMany
+    private Set<Tag> tags = new HashSet<>();
 
     public void addTicketTemplate(TicketTemplate ticketTemplate) {
         ticketTemplates.add(ticketTemplate);

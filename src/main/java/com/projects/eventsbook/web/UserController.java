@@ -78,7 +78,7 @@ public class UserController {
             return "redirect:update";
         }
 
-        return "redirect:profile";
+        return "redirect:/profile";
     }
 
     @GetMapping("/orders")

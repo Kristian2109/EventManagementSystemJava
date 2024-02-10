@@ -10,6 +10,7 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 @Getter
+@Setter
 @MappedSuperclass
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class IdentityClassBase {

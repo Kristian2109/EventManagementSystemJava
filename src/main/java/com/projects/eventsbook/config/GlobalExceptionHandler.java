@@ -18,11 +18,11 @@ public class GlobalExceptionHandler {
         return "redirect:/profile/error";
     }
 
-    @ExceptionHandler(Exception.class)
-    public String handleGenericException(Exception ex, RedirectAttributes model) {
-        model.addFlashAttribute("error", "Internal Server Error (Custom)");
-
-        return "redirect:/profile/error";
-    }
+//    @ExceptionHandler(Exception.class)
+//    public String handleGenericException(Exception ex, RedirectAttributes model) {
+//        model.addFlashAttribute("error", "Internal Server Error (Custom)");
+//
+//        return "redirect:/profile/error";
+//    }
 
 }

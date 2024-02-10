@@ -51,7 +51,7 @@ public class User extends IdentityClassBase {
     @Column(unique = true)
     private String identityNumber;
     @Min(value = 0)
-    private double balance;
+    private Double balance;
     @Lob
     private byte[] photo;
     @OneToMany(mappedBy = "boughtBy")

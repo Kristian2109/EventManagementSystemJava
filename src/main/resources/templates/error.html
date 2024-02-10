@@ -1,10 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<header th:include="fragments/header.html :: head"></header>
+<main>
+    <div th:replace="fragments/navbar.html :: nav"> </div>
+    <div class="center">
+        <h1>Error</h1>
+        <p>Go back and try again!</p>
+    </div>
+</main>
+<footer th:include="fragments/footer.html :: foot"></footer>
