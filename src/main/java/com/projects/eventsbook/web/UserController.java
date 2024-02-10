@@ -3,10 +3,10 @@ package com.projects.eventsbook.web;
 import com.projects.eventsbook.DTO.userDomain.UserProfileDTO;
 import com.projects.eventsbook.entity.BoughtTicket;
 import com.projects.eventsbook.entity.EventGroup;
-import com.projects.eventsbook.entity.TicketActivation;
 import com.projects.eventsbook.entity.User;
 import com.projects.eventsbook.mapper.UserMapper;
 import com.projects.eventsbook.service.order.TicketManager;
+import com.projects.eventsbook.service.user.BalanceManager;
 import com.projects.eventsbook.service.utils.QrCodeGenerator;
 import com.projects.eventsbook.service.eventGroup.EventGroupService;
 import com.projects.eventsbook.service.user.UserService;
@@ -28,16 +28,21 @@ public class UserController {
     private final UserService userService;
     private final EventGroupService eventGroupService;
     private final TicketManager ticketManager;
+    private final BalanceManager balanceManager;
 
     @Autowired
-    public UserController(UserService userService, EventGroupService eventGroupService, QrCodeGenerator qrCodeGenerator, TicketManager ticketManager) {
+    public UserController(UserService userService, EventGroupService eventGroupService, QrCodeGenerator qrCodeGenerator, TicketManager ticketManager, BalanceManager balanceManager) {
         this.userService = userService;
         this.eventGroupService = eventGroupService;
         this.ticketManager = ticketManager;
+        this.balanceManager = balanceManager;
     }
 
     @GetMapping
-    public String personalInfo(Model model, UserProfileDTO currentUser) {
+    public String personalInfo(Model model,
+                               UserProfileDTO currentUser) {
+        User userFromDB = userService.getById(currentUser.getId());
+        currentUser = UserMapper.toUserProfileDTO(userFromDB);
         model.addAttribute("userProfileDTO", currentUser);
         return "profile";
     }
@@ -87,5 +92,21 @@ public class UserController {
         List<BoughtTicket> tickets = ticketManager.getUpcomingUserTickets(loggedUser.getId());
         model.addAttribute("tickets", tickets);
         return "tickets";
+    }
+
+    @PostMapping("/balance/add")
+    public String addBalance(UserProfileDTO loggedUser,
+                             @RequestParam("currentBalance") Double currentBalance,
+                             @RequestParam("amount") Double amountToAdd) {
+        balanceManager.addMoneyToUser(loggedUser.getId(), currentBalance, amountToAdd);
+        return "redirect:/profile";
+    }
+
+    @PostMapping("/balance/draw")
+    public String drawMoneyFromAccount(UserProfileDTO loggedUser,
+                                       @RequestParam("currentBalance") Double currentBalance,
+                                       @RequestParam("amount") Double amountToDraw) {
+        balanceManager.drawMoneyFromUser(loggedUser.getId(), currentBalance, amountToDraw);
+        return "redirect:/profile";
     }
 }

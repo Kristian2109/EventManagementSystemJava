@@ -45,9 +45,10 @@
     </div>
     <hr>
     <form class="row" id="balanceForm" method="post">
+        <input hidden="hidden" name="currentBalance" th:value="*{balance}"/>
         <div class="input-field col l6 s12">
             <label for="balance">Balance:</label>
-            <input id="balance" type="number" class="validate">
+            <input id="balance" type="number" name="amount" class="validate">
         </div>
         <div class="input-field col l6 s12">
             <button id="addBtn" class="btn waves-effect waves-light">Add</button>
@@ -56,14 +57,15 @@
     </form>
     <script>
         document.getElementById("addBtn").addEventListener("click", function() {
-            document.getElementById("balanceForm").action = "/add";
+            document.getElementById("balanceForm").action = "profile/balance/add";
             document.getElementById("balanceForm").submit();
         });
 
         document.getElementById("drawBtn").addEventListener("click", function() {
-            document.getElementById("balanceForm").action = "/draw";
+            document.getElementById("balanceForm").action = "/profile/balance/draw";
             document.getElementById("balanceForm").submit();
         });
+
     </script>
     <div class="row">
         <div class="center">
