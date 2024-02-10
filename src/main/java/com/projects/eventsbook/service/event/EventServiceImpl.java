@@ -9,6 +9,7 @@ import com.projects.eventsbook.enumerations.GroupMemberStatus;
 import com.projects.eventsbook.enumerations.GroupRole;
 import com.projects.eventsbook.exceptions.InvalidOperationException;
 import com.projects.eventsbook.exceptions.NoEntityFoundException;
+import com.projects.eventsbook.mapper.EventMapper;
 import com.projects.eventsbook.service.utils.FileService;
 import com.projects.eventsbook.service.eventGroup.EventGroupService;
 import com.projects.eventsbook.service.user.UserService;
@@ -16,6 +17,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,11 +43,10 @@ public class EventServiceImpl implements EventService {
         EventGroup currentEventGroup = eventGroupService.get(createEventDTO.getEventGroupId());
         validateUserCreateEventInGroup(currentUser, currentEventGroup);
 
-        Event eventToCreate = new Event();
+        Event eventToCreate = EventMapper.toEvent(createEventDTO);
         eventToCreate.setCreatedBy(currentUser);
         eventToCreate.setEventGroup(currentEventGroup);
         eventToCreate.setImageFile(fileService.getFileById(createEventDTO.getImageDataId()));
-        BeanUtils.copyProperties(createEventDTO, eventToCreate);
 
         return eventRepositoryJPA.save(eventToCreate);
     }

@@ -5,7 +5,7 @@
 <div th:replace="fragments/navbar.html :: nav"> </div>
 <div class="row form register">
     <h3 class="center heading">Create Event</h3>
-    <form th:object="${createEventDTO}" class="col s12" method="post" action="/events" enctype="multipart/form-data">
+    <form th:object="${createEventDTO}" id="create-event-form" class="col s12" method="post" action="/events" enctype="multipart/form-data">
         <input hidden="hidden" th:field="*{createdById}">
         <input hidden="hidden" th:field="*{eventGroupId}">
         <div class="row">
@@ -63,6 +63,13 @@
                 <label>Is Online</label>
             </div>
         </div>
+        <div class="row">
+            <div class="input-field col s6">
+                <label for="tags">Tags</label>
+                <input th:field="*{tags}"  id="tags" type="text" class="validate">
+                <span class="help-note">Comma separated list with tags</span>
+            </div>
+        </div>
         <div class="file-field input-field">
             <div class="btn">
                 <span>File</span>
@@ -75,8 +82,19 @@
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 var elems = document.querySelectorAll('select');
-                var instances = M.FormSelect.init(elems);
+                var tags = document.querySelectorAll('.chips');
+                M.FormSelect.init(elems);
+                M.Chips.init(tags, {})
+
+                var form = document.getElementById("create-event-form");
+                form.addEventListener('keydown', function(event) {
+                    if (event.key === 'Enter') {
+                        event.preventDefault();
+                    }
+                });
+
             });
+
         </script>
         <div class="center">
             <button class="btn waves-effect waves-light" type="submit" name="action">Create Event

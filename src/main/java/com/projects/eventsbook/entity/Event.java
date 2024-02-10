@@ -2,6 +2,7 @@ package com.projects.eventsbook.entity;
 
 import com.projects.eventsbook.enumerations.GroupRole;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
@@ -22,13 +23,15 @@ import java.util.*;
         @Index(columnList = "name")
 })
 public class Event extends IdentityClassBase {
-    @NotNull
+    @NotBlank
     private String name;
-    @NotNull
+    @NotBlank
     @Lob
     private String description;
+    @NotBlank
     @NotNull
     private LocalDateTime beginTime;
+    @NotBlank
     @NotNull
     private LocalDateTime endTime;
     @NotNull
@@ -47,8 +50,8 @@ public class Event extends IdentityClassBase {
     private List<TicketTemplate> ticketTemplates = new ArrayList<>();
     @ManyToOne
     private ImageFile imageFile;
-    @ManyToMany
-    private Set<Tag> tags = new HashSet<>();
+    @ElementCollection
+    private List<String> tags = new ArrayList<>();
 
     public void addTicketTemplate(TicketTemplate ticketTemplate) {
         ticketTemplates.add(ticketTemplate);

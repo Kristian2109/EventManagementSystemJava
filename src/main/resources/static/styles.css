@@ -117,6 +117,9 @@ main {
     color: gold;
 }
 
+.tags-input-field {
+    margin: 1rem;
+}
 /* -------------------- Review -------------------- */
 
 .review-container {
