@@ -38,19 +38,10 @@ public class UserMapper {
     }
 
     public static UserProfileDTO toUserProfileDTO(User user) {
-        UserProfileDTO userProfile =  new UserProfileDTO(
-                user.getId(),
-                user.getFirstName(),
-                user.getLastName(),
-                user.getEmail(),
-                user.getUsername(),
-                user.getBornAt(),
-                user.getPhoneNumber(),
-                user.getCreatedAt(),
-                user.getProfileStatus().toString(),
-                user.getRole().toString(),
-                user.getIdentityNumber()
-        );
+        UserProfileDTO userProfile =  new UserProfileDTO();
+        BeanUtils.copyProperties(user, userProfile);
+        userProfile.setProfileStatus(user.getProfileStatus().toString());
+        userProfile.setRole(user.getRole().toString());
         return userProfile;
     }
 }

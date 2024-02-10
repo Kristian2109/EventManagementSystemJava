@@ -23,7 +23,7 @@ public class UserProfileDTO{
         private String profileStatus;
         private String role;
         private String identityNumber;
-        private OrganizerInformationDTO organizerInformationDTO;
+        private Double balance;
         private List<TicketLineDTO> ticketLines;
 
         public UserProfileDTO(Long id, String firstName, String lastName, String email,

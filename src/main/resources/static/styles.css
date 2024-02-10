@@ -39,6 +39,8 @@ main {
     margin: 10px auto;
 }
 
+/* -------------------- Profile -------------------- */
+
 .user-profile {
     margin: auto 20%;
 }
@@ -51,8 +53,8 @@ main {
     margin: 0.75rem 25%;
 }
 
-.star-icon {
-    color: gold;
+.user-profile .row {
+    margin: 0.5rem auto;
 }
 
 /* -------------------- Card -------------------- */
@@ -111,6 +113,10 @@ main {
     transform: translate(-50%, -50%);
 }
 
+.star-icon {
+    color: gold;
+}
+
 /* -------------------- Review -------------------- */
 
 .review-container {
@@ -142,4 +148,4 @@ main {
     margin: auto 15%;
 }
 
-/* -------------------- Group -------------------- */
+/* -------------------- Profile -------------------- */

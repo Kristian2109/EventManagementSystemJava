@@ -6,7 +6,6 @@
 <div th:object="${userProfileDTO}" class="user-profile">
     <h4 class="heading">Your profile information</h4>
     <div class="row">
-
         <p class="col s6">Names: <span class="bold" th:text="'' + *{firstName} + ' ' + *{lastName}"></span></p>
         <p class="col s6">Username:
             <span class="bold" th:text="*{username}"></span>
@@ -40,7 +39,34 @@
         <p class="col s6">Identity Number:
             <span class="bold" th:text="*{identityNumber}"></span>
         </p>
-        <div class="col s6">
+        <p class="col s6">Balance:
+            <span class="bold" th:text="*{balance}"></span>
+        </p>
+    </div>
+    <hr>
+    <form class="row" id="balanceForm" method="post">
+        <div class="input-field col l6 s12">
+            <label for="balance">Balance:</label>
+            <input id="balance" type="number" class="validate">
+        </div>
+        <div class="input-field col l6 s12">
+            <button id="addBtn" class="btn waves-effect waves-light">Add</button>
+            <button id="drawBtn" class="btn waves-effect waves-light">Draw</button>
+        </div>
+    </form>
+    <script>
+        document.getElementById("addBtn").addEventListener("click", function() {
+            document.getElementById("balanceForm").action = "/add";
+            document.getElementById("balanceForm").submit();
+        });
+
+        document.getElementById("drawBtn").addEventListener("click", function() {
+            document.getElementById("balanceForm").action = "/draw";
+            document.getElementById("balanceForm").submit();
+        });
+    </script>
+    <div class="row">
+        <div class="center">
             <a href="/profile/update" class="btn waves-effect waves-light center">Update your Profile</a>
         </div>
     </div>
