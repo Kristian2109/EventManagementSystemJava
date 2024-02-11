@@ -7,7 +7,7 @@
         <h3 th:if="${tickets == null || tickets.isEmpty()}">No Items to activate</h3>
         <div th:if="${tickets != null && !tickets.isEmpty()}">
             <h3>Your tickets to activate</h3>
-            <table>
+            <table id="ticket-table">
                 <thead>
                 <tr>
                     <th>Number</th>
@@ -34,6 +34,17 @@
             </table>
         </div>
     </div>
+    <script>
+        window.addEventListener("resize", () => {
+            let width = window.innerWidth
+            let cardTableClasses = document.getElementById("ticket-table").classList
+            if (width < 640) {
+                cardTableClasses.add("responsive-table")
+            } else {
+                cardTableClasses.remove("responsive-table")
+            }
+        })
+    </script>
 </main>
 <footer th:include="fragments/footer.html :: foot"></footer>
 </body>

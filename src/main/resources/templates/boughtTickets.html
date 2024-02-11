@@ -6,7 +6,7 @@
     <div class="bought-tickets-container">
         <h4 class="heading">Your Bought Tickets</h4>
             <div class="offers row mx-auto d-flex flex-row justify-content-center">
-                <div class="card col s6" th:each="ticket : ${tickets}">
+                <div class="card col s12 m8 l6" th:each="ticket : ${tickets}">
                     <div class="card-image">
                         <img th:src="'data:image/jpg;base64,' + ${ticket.getTicketImage()}">
                         <span th:text="${ticket.ticketTemplate.event.name}" class="card-title"></span>

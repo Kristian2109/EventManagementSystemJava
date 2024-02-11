@@ -10,14 +10,16 @@
         <p class="col s6">Username:
             <span class="bold" th:text="*{username}"></span>
         </p>
+        <hr>
     </div>
     <div class="row">
-        <p class="col s6">Email:
+        <p class="col s12 l6">Email:
             <span class="bold" th:text="*{email}"></span>
         </p>
-        <p class="col s6" >Phone Number:
+        <p class="col s6 l6" >Phone Number:
             <span class="bold" th:text="*{phoneNumber}"></span>
         </p>
+        <hr>
     </div>
     <div class="row">
         <p class="col s6">Profile Created at:
@@ -26,6 +28,7 @@
         <p class="col s6">Birthday:
             <span class="bold" th:text="${#temporals.format(userProfileDTO.bornAt, 'yyyy-MM-dd')}"></span>
         </p>
+        <hr>
     </div>
     <div class="row">
         <p class="col s6">Profile Status:
@@ -34,6 +37,7 @@
         <p class="col s6">Current Role:
             <span class="bold" th:text="*{role}"></span>
         </p>
+        <hr>
     </div>
     <div class="row">
         <p class="col s6">Identity Number:
@@ -42,6 +46,7 @@
         <p class="col s6">Balance:
             <span class="bold" th:text="*{balance}"></span>
         </p>
+        <hr>
     </div>
     <hr>
     <form class="row" id="balanceForm" method="post">

@@ -2,7 +2,7 @@
 <div th:fragment="nav">
     <nav >
         <div class="nav-wrapper blue lighten-1">
-            <a href="#" class="brand-logo"><i class="material-icons">accessibility</i>Eventsbook</a>
+            <a href="#" class="brand-logo">Eventsbook</a>
             <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li th:if="${authenticated}">
@@ -39,11 +39,32 @@
         </div>
     </nav>
 
-    <ul class="sidenav" id="mobile-demo">
-        <li><a href="sass.html">Sass</a></li>
-        <li><a href="badges.html">Components</a></li>
-        <li><a href="collapsible.html">Javascript</a></li>
-        <li><a href="mobile.html">Mobile</a></li>
+    <ul id="mobile-demo" class="sidenav">
+        <li th:if="${authenticated}">
+            <a th:if="${authenticated}" class='dropdown-trigger' data-target='dropdown3'>Profile</a>
+            <ul id='dropdown3' class='dropdown-content'>
+                <li><a href="/profile">Profile Info</a></li>
+                <li class="divider" tabindex="-1"></li>
+                <li><a href="/card">Card</a></li>
+                <li class="divider" tabindex="-1"></li>
+                <li><a href="/profile/orders">Orders</a></li>
+                <li class="divider" tabindex="-1"></li>
+                <li><a href="/profile/tickets">Tickets</a></li>
+            </ul>
+        </li>
+        <li th:if="${authenticated}">
+            <a th:if="${authenticated}" class='dropdown-trigger' data-target='dropdown4'>Groups</a>
+            <ul id='dropdown4' class='dropdown-content'>
+                <li><a href="/profile/groups">Your Groups</a></li>
+                <li class="divider" tabindex="-1"></li>
+                <li><a href="/groups/join">Join Groups</a></li>
+                <li class="divider" tabindex="-1"></li>
+                <li><a href="/groups/create">Create a Group</a></li>
+            </ul>
+        </li>
+        <li th:if="${authenticated}"><a href="/auth/logout">Logout</a></li>
+        <li th:if="${!authenticated}"><a href="/auth/login">Login</a></li>
+        <li th:if="${!authenticated}"><a href="/auth/register">Register</a></li>
     </ul>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -62,8 +83,7 @@
 
         document.addEventListener('DOMContentLoaded', function () {
             var elems = document.querySelectorAll('.sidenav');
-            var instances = M.Sidenav.init(elems, options);
+            var instances = M.Sidenav.init(elems);
         });
-
     </script>
 </div>

@@ -17,12 +17,12 @@
         </div>
         <div class="row">
             <p class="col s12"><i class="material-icons">date_range</i>Begins at:
-                <span class="bold" th:text="${#temporals.format(event.getBeginTime(), 'EEEE, d MMMM, HH MM')}"></span>
+                <span class="bold" th:text="${#temporals.format(event.getBeginTime(), 'EEEE, d MMMM, HH:MM')}"></span>
             </p>
         </div>
         <div class="row">
             <p class="col s12"><i class="material-icons">date_range</i>Ends at:
-                <span class="bold" th:text="${#temporals.format(event.getEndTime(), 'EEEE, d MMMM, HH MM')}"></span>
+                <span class="bold" th:text="${#temporals.format(event.getEndTime(), 'EEEE, d MMMM, HH:MM')}"></span>
             </p>
         </div>
         <hr>

@@ -2,45 +2,56 @@
 <header th:include="fragments/header.html :: head"></header>
 <body>
 <main>
-<div th:replace="fragments/navbar.html :: nav"> </div>
-<div class="card-container">
-    <h3 th:if="${ticketCardList == null || ticketCardList.isEmpty()}">No Items in your card</h3>
-    <div th:if="${ticketCardList != null && !ticketCardList.isEmpty()}">
-        <h3>Checkout your Tickets</h3>
-        <table>
-            <thead>
-            <tr>
-                <th>Event Title</th>
-                <th>Begins at</th>
-                <th>Ends at</th>
-                <th>Items Count</th>
-                <th>Price</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr  th:each="ticketCard : ${ticketCardList}" class="collection-item row">
-                <td th:text="${ticketCard.getTicketTemplate().getEvent().name}"></td>
-                <td th:text="${ticketCard.getTicketTemplate().getEvent().beginTime}"></td>
-                <td th:text="${ticketCard.getTicketTemplate().getEvent().endTime}"></td>
-                <td th:text="${ticketCard.ticketsCount}"></td>
-                <td th:text="${ticketCard.getTicketTemplate().price}"></td>
-                <td>
-                    <form method="post" th:action="'/card/ticket/' + ${ticketCard.getTicketTemplate().getId()}">
-                        <button class="waves-effect waves-light btn" type="submit">Buy</button>
-                    </form>
-                </td>
-                <td>
-                    <form method="post" th:action="'/card/' + ${ticketCard.getId()} + '/remove'">
-                        <button class="waves-effect waves-light btn" type="submit">
-                            <i class="material-icons">exposure_neg_1</i>
-                        </button>
-                    </form>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+    <div th:replace="fragments/navbar.html :: nav"></div>
+    <div class="card-container">
+        <h3 th:if="${ticketCardList == null || ticketCardList.isEmpty()}">No Items in your card</h3>
+        <div th:if="${ticketCardList != null && !ticketCardList.isEmpty()}">
+            <h3>Checkout your Tickets</h3>
+            <table id="card-table">
+                <thead>
+                <tr>
+                    <th>Event Title</th>
+                    <th>Begins at</th>
+                    <th>Ends at</th>
+                    <th>Items Count</th>
+                    <th>Price</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="ticketCard : ${ticketCardList}" class="collection-item row">
+                    <td th:text="${ticketCard.getTicketTemplate().getEvent().name}"></td>
+                    <td th:text="${#temporals.format(ticketCard.getTicketTemplate().getEvent().beginTime, 'yyyy-MM-dd')}"></td>
+                    <td th:text="${#temporals.format(ticketCard.getTicketTemplate().getEvent().beginTime, 'yyyy-MM-dd')}"></td>
+                    <td th:text="${ticketCard.ticketsCount}"></td>
+                    <td th:text="${ticketCard.getTicketTemplate().price}"></td>
+                    <td>
+                        <form method="post" th:action="'/card/ticket/' + ${ticketCard.getTicketTemplate().getId()}">
+                            <button class="waves-effect waves-light btn" type="submit">Buy</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form method="post" th:action="'/card/' + ${ticketCard.getId()} + '/remove'">
+                            <button class="waves-effect waves-light btn" type="submit">
+                                <i class="material-icons">exposure_neg_1</i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
+    <script>
+        window.addEventListener("resize", () => {
+            let width = window.innerWidth
+            let cardTableClasses = document.getElementById("card-table").classList
+            if (width < 640) {
+                cardTableClasses.add("responsive-table")
+            } else {
+                cardTableClasses.remove("responsive-table")
+            }
+        })
+    </script>
 </main>
 <footer th:include="fragments/footer.html :: foot"></footer>
 </body>
