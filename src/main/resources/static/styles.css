@@ -90,6 +90,11 @@ main {
     }
 }
 
+.card-image img {
+    height: 12rem;
+    width: 100%;
+}
+
 /* -------------------- Errors -------------------- */
 
 .error-container {

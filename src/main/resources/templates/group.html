@@ -17,6 +17,9 @@
                 <i class="material-icons right">send</i>
             </a>
         </div>
+        <div th:if="${!groupMember.groupRole.equals('VIEWER')}" class="row">
+           <p>Current Balance: <span th:text="${group.balance}"></span></p>
+        </div>
         <h4>Group events</h4>
         <ul class="collection">
             <li th:each="event, eventStat : ${group.getEvents()}"
