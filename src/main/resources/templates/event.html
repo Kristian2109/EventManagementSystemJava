@@ -82,7 +82,7 @@
                     </div>
                 </li>
             </ul>
-            <ul class="pagination">
+            <ul class="pagination" th:if="${reviewList != null && !reviewList.isEmpty()}">
                 <li th:if="${event.reviews.size() % pageSize != 0}"
                         th:each="i : ${#numbers.sequence( 0, event.reviews.size() / pageSize)}"
                     th:class="'waves-effect'"
@@ -100,10 +100,12 @@
                        th:text="${i + 1}"></a>
                 </li>
             </ul>
-            <div class="row center">
+            <div class="row center" th:if="${canUserMakeReview}">
                 <a th:href="'/events/' + ${event.getId()} + '/createReview'"
-                   class="btn waves-effect waves-light center">Make
-                    review</a>
+                   class="btn waves-effect waves-light center">
+                    Make
+                    review
+                </a>
             </div>
         </div>
     </div>

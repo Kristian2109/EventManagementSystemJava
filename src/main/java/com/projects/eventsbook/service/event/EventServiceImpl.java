@@ -16,8 +16,8 @@ import com.projects.eventsbook.service.user.UserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,13 +27,15 @@ public class EventServiceImpl implements EventService {
     private final UserService userService;
     private final EventGroupService eventGroupService;
     private final FileService fileService;
+    private final AuthorizationService authorizationService;
 
     @Autowired
-    public EventServiceImpl(EventRepositoryJPA eventRepositoryJPA, UserService userService, EventGroupService eventGroupService, FileService fileService) {
+    public EventServiceImpl(EventRepositoryJPA eventRepositoryJPA, UserService userService, EventGroupService eventGroupService, FileService fileService, AuthorizationService authorizationService) {
         this.eventRepositoryJPA = eventRepositoryJPA;
         this.userService = userService;
         this.eventGroupService = eventGroupService;
         this.fileService = fileService;
+        this.authorizationService = authorizationService;
     }
 
 
@@ -84,9 +86,11 @@ public class EventServiceImpl implements EventService {
     public Review makeReviewToEvent(CreateReviewDTO createReviewDTO) {
         Event event = getById(createReviewDTO.getEventId());
         User user = userService.getById(createReviewDTO.getReviewerId());
-//        if (!user.hasUserBeenOnEvent(event)) {
-//            throw new InvalidOperationException("User should participate in an event to make a review.");
-//        }
+
+        if (!this.authorizationService.canUserMakeReviewToEvent(user, event)) {
+            throw new InvalidOperationException("You cannot make review to the event!");
+        }
+
         Review review = new Review();
         BeanUtils.copyProperties(createReviewDTO, review);
         review.setEvent(event);
@@ -96,6 +100,7 @@ public class EventServiceImpl implements EventService {
         return review;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public boolean canUserReviewEvent(Long userId, Long eventId) {
         return eventRepositoryJPA.userReviewsCount(userId, eventId) == 0;

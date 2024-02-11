@@ -1,17 +1,25 @@
 package com.projects.eventsbook.service.event;
 
-import com.projects.eventsbook.entity.Event;
-import com.projects.eventsbook.entity.EventGroup;
-import com.projects.eventsbook.entity.GroupMember;
-import com.projects.eventsbook.entity.User;
+import com.projects.eventsbook.DAO.BoughtTicketRepositoryJPA;
+import com.projects.eventsbook.entity.*;
 import com.projects.eventsbook.enumerations.GroupRole;
 import com.projects.eventsbook.exceptions.InvalidOperationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.*;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class AuthorizationServiceImpl implements AuthorizationService{
+    private final BoughtTicketRepositoryJPA boughtTicketRepository;
+
+    @Autowired
+    public AuthorizationServiceImpl(BoughtTicketRepositoryJPA boughtTicketRepository) {
+        this.boughtTicketRepository = boughtTicketRepository;
+    }
+
     @Override
     public boolean canUserVisitEvent(Event eventToVisit, User user) {
         return !eventToVisit.getEventGroup().getIsPrivate();
@@ -52,10 +60,28 @@ public class AuthorizationServiceImpl implements AuthorizationService{
         return false;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public boolean canUserMakeReviewToEvent(User user, Event event) {
-        return false;
+        boolean isEventUpcoming = event.getEndTime().isAfter(LocalDateTime.now());
+        if (isEventUpcoming) {
+            return false;
+        }
+
+        List<BoughtTicket> userTickets = this.boughtTicketRepository.findAllByBoughtBy_Id(user.getId());
+        boolean hasUserBoughtTicket = userTickets.stream()
+                .anyMatch(boughtTicket -> boughtTicket
+                        .getTicketTemplate()
+                        .getEvent().equals(event));
+
+        if (!hasUserBoughtTicket) {
+            return false;
+        }
+
+        boolean hasUserAlreadyMadeReview = event.getReviews()
+                .stream()
+                .anyMatch(review -> review
+                        .getUser().equals(user));
+        return !hasUserAlreadyMadeReview;
     }
-
-
 }

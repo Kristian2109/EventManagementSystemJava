@@ -8,11 +8,11 @@ import com.projects.eventsbook.entity.Event;
 import com.projects.eventsbook.entity.ImageFile;
 import com.projects.eventsbook.entity.Review;
 import com.projects.eventsbook.entity.User;
+import com.projects.eventsbook.service.event.AuthorizationService;
 import com.projects.eventsbook.service.order.TicketManager;
 import com.projects.eventsbook.service.utils.FileService;
 import com.projects.eventsbook.service.event.EventService;
 import com.projects.eventsbook.service.user.UserService;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,14 +30,16 @@ public class EventController {
     private final UserService userService;
     private final FileService fileService;
     private final TicketManager ticketManager;
+    private final AuthorizationService authorizationService;
 
 
     @Autowired
-    public EventController(EventService eventService, UserService userService, FileService fileService, TicketManager ticketManager) {
+    public EventController(EventService eventService, UserService userService, FileService fileService, TicketManager ticketManager, AuthorizationService authorizationService) {
         this.eventService = eventService;
         this.userService = userService;
         this.fileService = fileService;
         this.ticketManager = ticketManager;
+        this.authorizationService = authorizationService;
     }
 
     @GetMapping("/create")
@@ -97,6 +99,7 @@ public class EventController {
         }
         model.addAttribute(event);
         model.addAttribute(reviews);
+        model.addAttribute("canUserMakeReview", authorizationService.canUserMakeReviewToEvent(user, event));
         model.addAttribute("pageNumber", pageNumber);
         model.addAttribute("pageSize", pageSize);
         model.addAttribute("isAdmin", event.canUserModifyEvent(user));
