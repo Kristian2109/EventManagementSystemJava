@@ -7,6 +7,8 @@ import com.projects.eventsbook.util.RetrieveUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
+
 @Transactional
 @Service
 public class BalanceManagerImpl implements BalanceManager {
@@ -21,7 +23,7 @@ public class BalanceManagerImpl implements BalanceManager {
     @Override
     public void addMoneyToUser(Long userId, Double currentBalance, Double amountToAdd) {
         User currentUser = RetrieveUtil.getByIdWithException(this.userRepository, userId);
-        if (currentUser.getBalance() != currentBalance) {
+        if (!Objects.equals(currentUser.getBalance(), currentBalance)) {
             return;
         }
         currentUser.setBalance(currentBalance + amountToAdd);
@@ -32,7 +34,7 @@ public class BalanceManagerImpl implements BalanceManager {
     @Override
     public void drawMoneyFromUser(Long userId, Double currentBalance, Double amountToDraw) {
         User currentUser = RetrieveUtil.getByIdWithException(this.userRepository, userId);
-        if (currentUser.getBalance() != currentBalance) {
+        if (!Objects.equals(currentUser.getBalance(), currentBalance)) {
             return;
         }
         if (currentUser.getBalance() < amountToDraw) {

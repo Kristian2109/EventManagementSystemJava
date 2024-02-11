@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -75,6 +76,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<BoughtTicket> getUserTickets(Long userId) {
-        return boughtTicketRepositoryJPA.findAllByBoughtBy_Id(userId);
+        List<BoughtTicket> orders = boughtTicketRepositoryJPA.findAllByBoughtBy_Id(userId);
+        orders.sort((BoughtTicket first, BoughtTicket second) -> {
+            if (first.getCreatedAt().isBefore(second.getCreatedAt())) {
+                return 1;
+            } else if (first.getCreatedAt().isAfter(second.getCreatedAt())){
+                return -1;
+            } else {
+                return 0;
+            }
+        });
+
+        return orders;
     }
 }

@@ -8,5 +8,5 @@ import java.util.List;
 public interface TicketManager {
     List<BoughtTicket> getUpcomingUserTickets(Long userId);
     void activateTicket(Long ticketId);
-    void activateTicketByUser(Long eventId, Long ticketId, Long userId);
+    String activateTicketByUser(Long eventId, Long ticketId, Long userId);
 }

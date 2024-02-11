@@ -2,7 +2,10 @@ package com.projects.eventsbook.config;
 
 
 import com.google.zxing.qrcode.decoder.Mode;
+import com.projects.eventsbook.exceptions.DuplicateResourceException;
 import com.projects.eventsbook.exceptions.InvalidOperationException;
+import com.projects.eventsbook.exceptions.InvalidUserDataException;
+import com.projects.eventsbook.exceptions.NoEntityFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -11,7 +14,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
-    @ExceptionHandler(InvalidOperationException.class)
+    @ExceptionHandler({
+            InvalidOperationException.class, NoEntityFoundException.class,
+            InvalidUserDataException.class, DuplicateResourceException.class})
     public String handleInvalidOperationException(Exception ex, RedirectAttributes model) {
         model.addFlashAttribute("error", ex.getMessage());
 

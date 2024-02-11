@@ -52,6 +52,7 @@ public class AuthServiceImpl implements AuthService {
 
         String salt = BCrypt.gensalt();
         String passwordHash = BCrypt.hashpw(user.getPassword(), salt);
+        user.setBalance(0D);
         user.setPassword(passwordHash);
         return userRepository.save(user);
     }

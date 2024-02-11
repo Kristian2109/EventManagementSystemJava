@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -60,7 +61,7 @@ public class TicketManagerImpl implements TicketManager {
     }
 
     @Override
-    public void activateTicketByUser(Long eventId, Long ticketId, Long userId) {
+    public String activateTicketByUser(Long eventId, Long ticketId, Long userId) {
         Optional<TicketActivation> ticketActivation = this.boughtTicketRepository.findOrderByTicketActivationId(ticketId);
         if (ticketActivation.isEmpty()) {
             throw new NoEntityFoundException("No such ticket!");
@@ -79,6 +80,11 @@ public class TicketManagerImpl implements TicketManager {
         if (!Objects.equals(ticketActivation.get().getOrder().getTicketTemplate().getEvent().getId(), eventId)) {
             throw new InvalidOperationException("Invalid activation Id!");
         }
+        if (ticketActivation.get().getActivationDate() != null) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            return "Ticket was activated on: " + ticketActivation.get().getActivationDate().format(formatter);
+        }
         this.activateTicket(ticketId);
+        return "Ticket successfully activated";
     }
 }

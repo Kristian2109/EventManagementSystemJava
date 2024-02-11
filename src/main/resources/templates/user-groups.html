@@ -4,7 +4,7 @@
 <main>
 <div th:replace="fragments/navbar.html :: nav"> </div>
 <div class="user-profile">
-    <h4 class="heading">Your eventGroups</h4>
+    <h4 class="heading">Your Event groups</h4>
     <ul class="collection">
         <li th:each="eventGroup, groupStat : ${groups}" class="collection-item avatar">
             <img th:if="${eventGroup.getImageFile() != null}" th:src="'data:image/jpg;base64,' + ${eventGroup.getImageFile().getEncoded()}"

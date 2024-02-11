@@ -162,9 +162,11 @@ public class EventController {
                                  RedirectAttributes redirectAttributes
                                  ) {
         try {
-            ticketManager.activateTicketByUser(eventId, ticketId, userProfileDTO.getId());
+            String message = ticketManager.activateTicketByUser(eventId, ticketId, userProfileDTO.getId());
+            redirectAttributes.addFlashAttribute("message", message);
+
         } catch (Exception e) {
-            redirectAttributes.addAttribute("error", e.getMessage());
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
         }
         return "redirect:/events/" + eventId;
     }

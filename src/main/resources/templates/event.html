@@ -3,6 +3,11 @@
 <body>
 <main>
     <div th:replace="fragments/navbar.html :: nav"></div>
+    <div th:if="${message}" class="green lighten-2 center error-container" id="error-container">
+        <p th:text="${message}">
+            Message
+        </p>
+    </div>
     <div th:object="${event}" class="event-container">
         <div class="event-image-container row" th:if="image">
             <img th:src="'data:image/jpg;base64,' + ${image}" ALT="eventPhoto"/>
