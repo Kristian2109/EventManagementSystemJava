@@ -28,4 +28,9 @@ public interface GroupRepositoryJpa extends JpaRepository<EventGroup, Long> {
 
     @Query("select m from GroupMember m where m.user.id = ?1 and m.eventGroup.id = ?2")
     Optional<GroupMember> findMemberByGroupAndUserId(@Param("userId") Long userId, @Param("groupId") Long groupId);
+
+    @Override
+    @NonNull
+    @EntityGraph("Group.image")
+    List<EventGroup> findAll();
 }

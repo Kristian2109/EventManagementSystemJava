@@ -26,7 +26,7 @@ public class FileServiceImpl implements FileService {
             ImageFile newImage = new ImageFile();
             byte[] imageData = file.getBytes();
             newImage.setData(imageData);
-            newImage.setType(file.getContentType());
+            newImage.setFormat(file.getContentType());
             newImage.setName(file.getName());
             return imageFileRepositoryJPA.save(newImage);
         } catch (Exception e) {

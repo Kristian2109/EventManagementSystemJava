@@ -16,7 +16,14 @@ import java.util.List;
 @NoArgsConstructor
 @NamedEntityGraph(name = "EventGroup.relations", attributeNodes = {
         @NamedAttributeNode("members"),
-        @NamedAttributeNode("events"),
+        @NamedAttributeNode(value = "events", subgraph = "Event.image"),
+        @NamedAttributeNode("imageFile"),
+}, subgraphs = {
+        @NamedSubgraph(name = "Event.image", attributeNodes = {
+                @NamedAttributeNode("imageFile")
+        })
+})
+@NamedEntityGraph(name = "Group.image", attributeNodes = {
         @NamedAttributeNode("imageFile")
 })
 @Table(indexes = {

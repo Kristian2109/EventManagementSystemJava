@@ -15,7 +15,7 @@ import java.util.Base64;
 })
 public class ImageFile extends IdentityClassBase{
     private String name;
-    private String type;
+    private String format;
     @Lob
     @Column(columnDefinition = "LONGBLOB")
     @NotNull
@@ -26,7 +26,7 @@ public class ImageFile extends IdentityClassBase{
         return "ImageFile{" +
                 "id=" + getId() +
                 ", name='" + name + '\'' +
-                ", type='" + type + '\'' +
+                ", type='" + format + '\'' +
                 '}';
     }
 
