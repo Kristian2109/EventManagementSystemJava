@@ -17,7 +17,9 @@ import java.util.*;
         @NamedAttributeNode("reviews"),
         @NamedAttributeNode("ticketTemplates"),
         @NamedAttributeNode("imageFile"),
-        @NamedAttributeNode("eventGroup")
+        @NamedAttributeNode("eventGroup"),
+        @NamedAttributeNode("tags"),
+        @NamedAttributeNode("createdBy")
 })
 @Table(indexes = {
         @Index(columnList = "name")

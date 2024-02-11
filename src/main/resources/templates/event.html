@@ -12,6 +12,10 @@
             <p style="white-space: pre-line; word-wrap: break-word;" th:text="*{description}">Event Description</p>
         </div>
         <div class="row">
+            Tags:
+            <div th:each=" tag : *{tags}" th:text="${tag}" class="chip"></div>
+        </div>
+        <div class="row">
             <p class="col s12"><i class="material-icons">date_range</i>Begins at:
                 <span class="bold" th:text="${#temporals.format(event.getBeginTime(), 'EEEE, d MMMM, HH MM')}"></span>
             </p>
