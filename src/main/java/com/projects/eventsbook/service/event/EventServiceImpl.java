@@ -4,6 +4,7 @@ import com.projects.eventsbook.DAO.EventRepositoryJPA;
 import com.projects.eventsbook.DTO.eventDomain.CreateEventDTO;
 import com.projects.eventsbook.DTO.eventDomain.CreateReviewDTO;
 import com.projects.eventsbook.DTO.eventDomain.CreateTicketTemplateDTO;
+import com.projects.eventsbook.DTO.eventDomain.EventDetails;
 import com.projects.eventsbook.entity.*;
 import com.projects.eventsbook.enumerations.GroupMemberStatus;
 import com.projects.eventsbook.enumerations.GroupRole;
@@ -13,6 +14,7 @@ import com.projects.eventsbook.mapper.EventMapper;
 import com.projects.eventsbook.service.utils.FileService;
 import com.projects.eventsbook.service.eventGroup.EventGroupService;
 import com.projects.eventsbook.service.user.UserService;
+import com.projects.eventsbook.util.RetrieveUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -104,6 +106,12 @@ public class EventServiceImpl implements EventService {
     @Override
     public boolean canUserReviewEvent(Long userId, Long eventId) {
         return eventRepositoryJPA.userReviewsCount(userId, eventId) == 0;
+    }
+
+    @Override
+    public EventDetails getEventDetailsForAdmin(Long eventId) {
+        Event event = RetrieveUtil.getByIdWithException(this.eventRepositoryJPA, eventId);
+        return EventMapper.toEventDetails(event);
     }
 
     private void validateUserCreateEventInGroup(User user, EventGroup eventGroup) {
