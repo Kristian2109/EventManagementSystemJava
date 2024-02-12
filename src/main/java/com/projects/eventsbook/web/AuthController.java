@@ -7,6 +7,7 @@ import com.projects.eventsbook.entity.User;
 import com.projects.eventsbook.mapper.UserMapper;
 import com.projects.eventsbook.service.user.AuthService;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,7 +36,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public String register(
-            @ModelAttribute("registerUserDTO") RegisterUserDTO registerUserDTO,
+            @Valid RegisterUserDTO registerUserDTO,
             BindingResult bindingResult,
             RedirectAttributes redirectAttributes,
             HttpSession session

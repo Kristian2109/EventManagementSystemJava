@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
 
         if (user.getFirstName() != null) {
             userValidatorService.validateName(user.getFirstName());
-            currentUser.setFirstName(user.getUsername());
+            currentUser.setFirstName(user.getFirstName());
         }
 
         if (user.getLastName() != null) {
