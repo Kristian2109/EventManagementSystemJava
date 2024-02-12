@@ -14,4 +14,6 @@ public interface AuthorizationService {
 
     public boolean canMemberModifyGroup(GroupMember groupMember); // To do
     public boolean canUserMakeReviewToEvent(User user, Event event); // To do
+
+    public void validateAccessEventAdminPanel(Long userId, Long eventId);
 }

@@ -1,8 +1,10 @@
 package com.projects.eventsbook.web;
 
+import com.google.zxing.qrcode.decoder.Mode;
 import com.projects.eventsbook.DTO.eventDomain.CreateEventDTO;
 import com.projects.eventsbook.DTO.eventDomain.CreateReviewDTO;
 import com.projects.eventsbook.DTO.eventDomain.CreateTicketTemplateDTO;
+import com.projects.eventsbook.DTO.eventDomain.EventDetails;
 import com.projects.eventsbook.DTO.userDomain.UserProfileDTO;
 import com.projects.eventsbook.entity.Event;
 import com.projects.eventsbook.entity.ImageFile;
@@ -169,5 +171,12 @@ public class EventController {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
         }
         return "redirect:/events/" + eventId;
+    }
+
+    @GetMapping("/{eventId}/extended")
+    public String getAdminEvent(@PathVariable Long eventId, Model model, UserProfileDTO userProfileDTO) {
+        authorizationService.validateAccessEventAdminPanel(userProfileDTO.getId(), eventId);
+        model.addAttribute("event", eventService.getEventDetailsForAdmin(eventId));
+        return "event-admin";
     }
 }

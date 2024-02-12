@@ -1,23 +1,32 @@
 package com.projects.eventsbook.service.event;
 
 import com.projects.eventsbook.DAO.BoughtTicketRepositoryJPA;
+import com.projects.eventsbook.DAO.EventRepositoryJPA;
+import com.projects.eventsbook.DAO.GroupRepositoryJpa;
 import com.projects.eventsbook.entity.*;
 import com.projects.eventsbook.enumerations.GroupRole;
 import com.projects.eventsbook.exceptions.InvalidOperationException;
+import com.projects.eventsbook.exceptions.NoEntityFoundException;
+import com.projects.eventsbook.util.RetrieveUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AuthorizationServiceImpl implements AuthorizationService{
     private final BoughtTicketRepositoryJPA boughtTicketRepository;
+    private final EventRepositoryJPA eventRepository;
+    private final GroupRepositoryJpa groupRepositoryJpa;
 
     @Autowired
-    public AuthorizationServiceImpl(BoughtTicketRepositoryJPA boughtTicketRepository) {
+    public AuthorizationServiceImpl(BoughtTicketRepositoryJPA boughtTicketRepository, EventRepositoryJPA eventRepository, GroupRepositoryJpa groupRepositoryJpa) {
         this.boughtTicketRepository = boughtTicketRepository;
+        this.eventRepository = eventRepository;
+        this.groupRepositoryJpa = groupRepositoryJpa;
     }
 
     @Override
@@ -83,5 +92,22 @@ public class AuthorizationServiceImpl implements AuthorizationService{
                 .anyMatch(review -> review
                         .getUser().equals(user));
         return !hasUserAlreadyMadeReview;
+    }
+
+    @Override
+    public void validateAccessEventAdminPanel(Long eventId, Long userId) {
+        Event event = RetrieveUtil.getByIdWithException(eventRepository, eventId);
+        EventGroup group = RetrieveUtil.getByIdWithException(groupRepositoryJpa, event.getEventGroup().getId());
+        Optional<GroupMember> groupMember = group
+                .getMembers()
+                .stream()
+                .filter(member -> member.getUser().getId().equals(userId))
+                .findFirst();
+        if (groupMember.isEmpty()) {
+            throw new NoEntityFoundException("The group has no such member");
+        }
+        if (canMemberModifyGroup(groupMember.get())) {
+            throw new InvalidOperationException("No needed permissions");
+        };
     }
 }
