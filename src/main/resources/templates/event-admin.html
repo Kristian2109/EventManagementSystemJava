@@ -1,10 +1,118 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<header th:include="fragments/header.html :: head"></header>
 <body>
-$END$
+<main>
+    <div th:replace="fragments/navbar.html :: nav"></div>
+    <div th:if="${message}" class="green lighten-2 center error-container" id="error-container">
+        <p th:text="${message}">
+            Message
+        </p>
+    </div>
+    <div th:object="${event}" class="event-container admin-container">
+        <div class="event-image-container row" th:if="*{image != null}">
+            <img th:src="'data:image/jpg;base64,' + *{image}" ALT="eventPhoto"/>
+        </div>
+        <h5 class="heading col s12" th:text="*{name}"></h5>
+        <div>
+            <p style="white-space: pre-line; word-wrap: break-word;" th:text="*{description}">Event Description</p>
+        </div>
+        <div class="row">
+            Tags:
+            <div th:each=" tag : *{tags}" th:text="${tag}" class="chip"></div>
+        </div>
+        <div class="row">
+            <p class="col s12"><i class="material-icons">date_range</i>Begins at:
+                <span class="bold" th:text="*{#temporals.format(beginTime, 'EEEE, d MMMM, HH:MM')}"></span>
+            </p>
+        </div>
+        <div class="row">
+            <p class="col s12"><i class="material-icons">date_range</i>Ends at:
+                <span class="bold" th:text="*{#temporals.format(endTime, 'EEEE, d MMMM, HH:MM')}"></span>
+            </p>
+        </div>
+        <div class="row">
+            <p class="col s12"><i class="material-icons">date_range</i>Created at:
+                <span class="bold" th:text="*{#temporals.format(createdAt, 'EEEE, d MMMM, HH:MM')}"></span>
+            </p>
+        </div>
+        <div class="row">
+            <p class="col s12">Created by:
+                <span class="bold" th:text="*{createdByName}"></span>
+            </p>
+        </div>
+        <div class="row">
+            <p class="col s6">Reviews count:
+                <span class="bold" th:text="*{reviewsCount}"></span>
+            </p>
+            <p class="col s6">Average Rating:
+                <span class="bold" th:text="*{averageRating}"></span>
+            </p>
+        </div>
+        <div class="row">
+            <p class="col s6">Is online:
+                <span th:if="*{isOnline}" class="bold">Yes</span>
+                <span th:unless="*{isOnline}" class="bold">No</span>
+            </p>
+            <p class="col s6">Is free:
+                <span th:if="*{isFree}" class="bold">Yes</span>
+                <span th:unless="*{isFree}" class="bold">No</span>
+            </p>
+        </div>
+        <hr>
+        <div>
+            <h5 th:if="${event.ticketTemplates.isEmpty()}" class="center">No Available Tickets</h5>
+            <div>
+                <div class="row center">
+                    <a th:href="'/events/' + ${event.getId()} + '/createTicket'"
+                       class="btn waves-effect waves-light center">Add ticket</a>
+                </div>
+            </div>
+            <h5 class="center">Tickets</h5>
+            <table th:if="*{!ticketTemplates.isEmpty()}" id="ticket-table">
+                <thead>
+                <tr>
+                    <th>Ticket Description</th>
+                    <th>Price</th>
+                    <th>Current Tickets</th>
+                    <th>Initial Tickets</th>
+                    <th>Sold Tickets</th>
+                    <th>Revenue</th>
+                </tr>
+                </thead>
+                <tr th:each="ticket, ticketStat : *{ticketTemplates}" class="row">
+                    <td th:text="${ticket.description}"></td>
+                    <td th:text="${ticket.price}"></td>
+                    <td th:text="${ticket.currentTicketsCount}"></td>
+                    <td th:text="${ticket.initialTicketsCount}"></td>
+                    <td th:text="${ticket.initialTicketsCount - ticket.currentTicketsCount}"></td>
+                    <td th:text="${ticket.revenue}"></td>
+                </tr>
+            </table>
+        </div>
+        <div>
+            <form th:action="${event.id} + '/tickets/activate'" method="post">
+                <div class="row s12">
+                    Activate a ticket using the ticket number:
+                    <div class="input-field inline">
+                        <input id="ticketId" type="number" class="validate" name="ticketId">
+                    </div>
+                    <button class="waves-effect waves-light btn" type="submit">Activate</button>
+                </div>
+            </form>
+            <hr>
+        </div>
+    </div>
+    <script>
+        window.addEventListener("resize", () => {
+            let width = window.innerWidth
+            let cardTableClasses = document.getElementById("ticket-table").classList
+            if (width < 640) {
+                cardTableClasses.add("responsive-table")
+            } else {
+                cardTableClasses.remove("responsive-table")
+            }
+        })
+    </script>
+</main>
+<footer th:include="fragments/footer.html :: foot"></footer>
 </body>
-</html>

@@ -12,7 +12,13 @@
         <div class="event-image-container row" th:if="image">
             <img th:src="'data:image/jpg;base64,' + ${image}" ALT="eventPhoto"/>
         </div>
-        <h5 class="heading col s12" th:text="*{name}"></h5>
+        <div class="row">
+            <h5 class="heading col s6" th:text="*{name}"></h5>
+            <div th:if="${isAdmin}" class="col s6 center">
+                <a th:href="'/events/' + ${event.getId()} + '/extended'"
+                   class="btn btn-small waves-effect waves-light center">To Admin panel</a>
+            </div>
+        </div>
         <div>
             <p style="white-space: pre-line; word-wrap: break-word;" th:text="*{description}">Event Description</p>
         </div>
